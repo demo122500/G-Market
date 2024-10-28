@@ -172,6 +172,7 @@ router.get(
         httpOnly: true,
         sameSite: "none",
         secure: true,
+        domain: "https://g-market-snowy.vercel.app"
       });
       res.status(201).json({
         success: true,
