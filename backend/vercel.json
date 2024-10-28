@@ -1,10 +1,21 @@
 {
-    "version": 2,
-    "name":"e-shop-tutorial",
-    "builds":[
-        {"src":"server.js","use":"@vercel/node"}
-    ],
-    "routes":[
-        {"src":"/(.*)","dest":"/server.js"}
-    ]
+  "version": 2,
+  "name": "e-shop-tutorial",
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/server.js" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)", // Applies headers to all API routes
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "https://gmarket-delta.vercel.app" }, // Set to your frontend domain
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
+  ]
 }
