@@ -162,21 +162,20 @@ router.get(
   })
 );
 
-// log out from shop
-router.get(
-  "/logout",
-  catchAsyncErrors(async (req, res, next) => {
-    try {
-      res.setHeader("Set-Cookie", "seller_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict");
-      res.status(200).json({
-        success: true,
-        message: "Log out successful",
-      });
-    } catch (error) {
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
-);
+router.get("/logout", (req, res) => {
+  res.clearCookie("seller_token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  res.cookie("seller_token", "", {
+    expires: new Date(0),
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  return res.status(200).json({ success: true, message: "Logout successful!" });
+});
 
 // get shop info
 router.get(
