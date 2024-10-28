@@ -29,12 +29,12 @@ const ShopInfo = ({ isOwner }) => {
 
   const logoutHandler = async () => {
     try {
-      axios.get(`${server}/shop/logout`,{
+      await axios.get(`${server}/shop/logout`, {
         withCredentials: true,
       });
-      window.location.href = "/";
+      window.location.reload();
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error("Logout failed:", error);
     }
   };
 
