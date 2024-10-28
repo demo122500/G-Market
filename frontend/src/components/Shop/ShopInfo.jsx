@@ -26,19 +26,12 @@ const ShopInfo = ({ isOwner }) => {
     })
   }, [])
   
-
   const logoutHandler = async () => {
-    try {
-      await axios.post(`${server}/shop/logout`, {
-        withCredentials: true,
-      });
-      // Redirect after logout
-      window.location.href = "/login";
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+    axios.get(`${server}/shop/logout`,{
+      withCredentials: true,
+    });
+    window.location.reload();
   };
-
 
   const totalReviewsLength =
     products &&
