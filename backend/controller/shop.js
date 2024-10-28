@@ -162,18 +162,26 @@ router.get(
   })
 );
 
-// logout shop
-router.post("/logout", async (req, res) => {
-  res.cookie("seller_token", "", {
-    expires: new Date(0),
-    httpOnly: true,
-    secure: true,
-    sameSite: "None",
-    domain: ".vercel.app",
-    path: "/"
-  });
-  res.status(200).json({ success: true, message: "Logout successful!" });
-});
+// log out from shop
+router.get(
+  "/logout",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("seller_token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+      res.status(200).json({
+        success: true,
+        message: "Log out successful!",
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
 
 
 // get shop info
