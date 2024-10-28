@@ -167,16 +167,13 @@ router.get(
   "/logout",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      console.log("Before logout:", req.cookies.seller_token);
       res.cookie("seller_token", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        domain: "https://g-market-snowy.vercel.app"
       });
-      console.log("After logout:", req.cookies.seller_token);
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "Log out successful!",
       });
