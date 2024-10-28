@@ -167,8 +167,8 @@ router.get(
   "/logout",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      res.cookie("seller_token", "", {
-        expires: new Date(Date.now(0),
+      res.cookie("seller_token", null, {
+        expires: new Date(Date.now()),
         httpOnly: true,
         sameSite: "none",
         secure: true,
