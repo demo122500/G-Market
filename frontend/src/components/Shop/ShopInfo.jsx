@@ -29,7 +29,7 @@ const ShopInfo = ({ isOwner }) => {
 
   const logoutHandler = async () => {
     try {
-      await axios.get(`${server}/shop/logout`, {
+      await axios.post(`${server}/shop/logout`, {
         withCredentials: true,
       });
       // Redirect after logout
