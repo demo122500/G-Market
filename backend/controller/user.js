@@ -46,7 +46,7 @@ router.post("/create-user", async (req, res, next) => {
 
     // Create activation token and activation URL
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `https://gmarket-delta.vercel.app/activation/${activationToken}`;
 
     // Send activation email with HTML message
     try {

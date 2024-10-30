@@ -4,31 +4,30 @@ const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 const Shop = require("../model/shop");
 
-exports.isAuthenticated = catchAsyncErrors(async(req,res,next) => {
-    const {token} = req.cookies;
+exports.isAuthenticated = catchAsyncErrors(async (req, res, next) => {
+    const { token } = req.cookies;
 
-    if(!token){
-        console.log('No token found in cookies');
+    if (!token) {
+        console.log("No token found in cookies");
         return next(new ErrorHandler("Please login to continue", 401));
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        console.log('Token decoded:', decoded);
+        console.log("Token decoded successfully:", decoded);
         req.user = await User.findById(decoded.id);
 
         if (!req.user) {
-            console.log('User not found');
+            console.log("User not found in database");
             return next(new ErrorHandler("Please login to continue", 401));
         }
 
         next();
     } catch (error) {
-        console.log('Error verifying token:', error);
+        console.log("Error verifying token:", error.message);
         return next(new ErrorHandler("Please login to continue", 401));
     }
 });
-
 
 exports.isSeller = catchAsyncErrors(async(req,res,next) => {
     const {seller_token} = req.cookies;
