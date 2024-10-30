@@ -45,10 +45,16 @@ const Header = ({ activeHeading }) => {
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
+
+    if (term.trim() === "") {
+      setSearchData([]);
+    } else {
+
     const filteredProducts = allProducts?.filter((product) => 
       product.name.toLowerCase().includes(term.toLowerCase())
     );
     setSearchData(filteredProducts);
+    }
   };
 
   window.addEventListener("scroll", () => {
