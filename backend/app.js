@@ -13,9 +13,15 @@ app.use(
 );
 
 app.use(cookieParser());
+
 app.use("/test", (req, res) => {
-  res.send("Hello world!");
+  res.cookie("testCookie", "testValue", {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  }).send("Hello world!");
 });
+
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));

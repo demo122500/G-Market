@@ -17,7 +17,7 @@ export const loadUser = () => async (dispatch) => {
       payload: data.user,
     });
   } catch (error) {
-    console.error("Erro loading user:", error);
+    console.error("Error loading user:", error);
     dispatch({
       type: "LoadUserFail",
       payload: error.response?.data?.message,

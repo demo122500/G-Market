@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Components
+import PopupBanner from "./components/PopupBanner.jsx";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
+import SellerProtectedRoute from "./routes/SellerProtectedRoute";
+import Error from "./pages/Error.jsx";
+
+// Pages
 import {
   LoginPage,
   SignupPage,
@@ -46,30 +60,29 @@ import {
   AdminDashboardEvents,
   AdminDashboardWithdraw,
 } from "./routes/AdminRoutes";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+// Redux
 import Store from "./redux/store";
 import { loadSeller, loadUser } from "./redux/actions/user";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
-import { ShopHomePage } from "./ShopRoutes.js";
-import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
-import axios from "axios";
+
+// Config
 import { server } from "./server";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import Error from "./pages/Error.jsx";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
 
-  async function getStripeApikey() {
-    const { data } = await axios.get(`${server}/payment/stripeapikey`);
-    setStripeApiKey(data.stripeApikey);
-  }
   useEffect(() => {
+    const getStripeApikey = async () => {
+      try {
+        const { data } = await axios.get(`${server}/payment/stripeapikey`);
+        setStripeApiKey(data.stripeApikey);
+      } catch (error) {
+        console.error("Error fetching Stripe API key", error);
+      }
+    };
+
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
@@ -79,6 +92,36 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <AppContent stripeApikey={stripeApikey} />
+    </BrowserRouter>
+  );
+};
+
+const AppContent = ({stripeApikey, isVisible}) => {
+  const location = useLocation();
+  const [isPopupActive, setIsPopupActive] = useState(false);
+
+  useEffect(() => {
+    setIsPopupActive(true);
+  }, []);
+
+  useEffect(() => {
+    if (isPopupActive) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    console.log("Popup active:", isPopupActive);
+    
+    return () => document.body.classList.remove("no-scroll");
+  }, [isPopupActive]);
+
+  return (
+    <>
+      {/* Popup banner visible on all pages */}
+      {location.pathname === "/" && (<PopupBanner isVisible={isPopupActive}  onClose={() => setIsPopupActive(false)} />)}
+
+      {/* Stripe Payment Routes */}
       {stripeApikey && (
         <Elements stripe={loadStripe(stripeApikey)}>
           <Routes>
@@ -93,7 +136,9 @@ const App = () => {
           </Routes>
         </Elements>
       )}
+
       <Routes>
+        {/* General Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
@@ -160,14 +205,15 @@ const App = () => {
           }
         />
         <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
-        {/* shop Routes */}
+        
+        {/* Shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
         <Route path="/shop-login" element={<ShopLoginPage />} />
         <Route
           path="/shop/:id"
           element={
             <SellerProtectedRoute>
-              <ShopHomePage />
+              <HomePage />
             </SellerProtectedRoute>
           }
         />
@@ -211,7 +257,6 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
-
         <Route
           path="/order/:id"
           element={
@@ -268,6 +313,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        
         {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
@@ -326,6 +372,8 @@ const App = () => {
           }
         />
       </Routes>
+
+      {/* Toast Notifications */}
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -338,8 +386,8 @@ const App = () => {
         pauseOnHover
         theme="dark"
       />
-    </BrowserRouter>
-  );
-};
+    </>
+  )
+}
 
 export default App;

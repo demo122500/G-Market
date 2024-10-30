@@ -18,9 +18,13 @@ import virginia_logo from "./virginia.png";
 import purefoods_logo from "./purefoods_logo.webp";
 import sanmiguel_logo from "./sanmiguel_logo.webp";
 import nestle_logo from "./nestle.png";
-import head_n_shoulder from "./head_shoulder.png"; 
+import head_n_shoulder from "./head_shoulder.png";
+
+import popup_banner from "./popup-banner1.png";
 
 export const assets = {
+  popup_banner,
+
   comp_logo,
   g_market_logo,
   g_large,

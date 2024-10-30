@@ -173,7 +173,7 @@ router.get(
         sameSite: "none",
         secure: true,
       });
-      res.status(201).json({
+      res.status(200).json({
         success: true,
         message: "Log out successful!",
       });

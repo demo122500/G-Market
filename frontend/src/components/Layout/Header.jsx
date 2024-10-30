@@ -3,9 +3,14 @@ import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
 import { categoriesData } from "../../static/data";
 import {
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillYoutube,
   AiOutlineHeart,
+  AiOutlineQuestionCircle,
   AiOutlineSearch,
   AiOutlineShoppingCart,
+  AiOutlineTwitter,
 } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -17,7 +22,7 @@ import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
 import { assets } from '../../Assests/assets'
-import { IoBagOutline, IoHeartOutline } from "react-icons/io5";
+import { IoBagOutline, IoChevronDown, IoGlobeOutline, IoHeartOutline, IoNotifications } from "react-icons/io5";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -45,10 +50,16 @@ const Header = ({ activeHeading }) => {
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
+
+    if (term.trim() === "") {
+      setSearchData([]);
+    } else {
+
     const filteredProducts = allProducts?.filter((product) => 
-      product.name.toLowercase().includes(term.toLowercase())
+      product.name.toLowerCase().includes(term.toLowerCase())
     );
     setSearchData(filteredProducts);
+    }
   };
 
   window.addEventListener("scroll", () => {
@@ -58,7 +69,7 @@ const Header = ({ activeHeading }) => {
   return (
     <>
       <div className={`${styles.section}`}>
-        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
+        <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between gap-8">
           <div>
             <Link to="/">
               <img
@@ -68,14 +79,41 @@ const Header = ({ activeHeading }) => {
               />
             </Link>
           </div>
+
+          <div className="flex items-center gap-2">
+            <p className="text-[#73bd3a]">Follow us on</p>
+            <div className="flex items-center gap-2">
+              <AiFillFacebook
+                size={20}
+                color="#73bd3a"
+                className="cursor-pointer"
+              />
+              <AiOutlineTwitter
+                size={20}
+                color="#73bd3a"
+                className="cursor-pointer"
+              />
+              <AiFillInstagram
+                size={20}
+                color="#73bd3a"
+                className="cursor-pointer"
+              />
+              <AiFillYoutube
+                size={20}
+                color="#73bd3a"
+                className="cursor-pointer"
+              />
+            </div>
+          </div>
+
           {/* search box */}
-          <div className="w-[50%] relative">
+          <div className="w-[40%] relative ">
             <input
               type="text"
-              placeholder="Search Product"
+              placeholder="Search for Products, Brands and Shops"
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-[40px] w-full px-2 border-[#73bd3a] border-[1px] rounded-md"
+              className="h-[40px] w-full px-4 border-[#73bd3a] border-[1px] rounded-md"
             />
             <AiOutlineSearch
               size={25}
@@ -83,7 +121,7 @@ const Header = ({ activeHeading }) => {
               color="#73bd3a"
             />
             {searchData && searchData.length !== 0 ? (
-              <div className="absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
+              <div className="absolute w-full min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4">
                 {searchData &&
                   searchData.map((i, index) => {
                     return (
@@ -103,12 +141,33 @@ const Header = ({ activeHeading }) => {
             ) : null}
           </div>
 
-          <div className={`${styles.button}`}>
+          <div className="flex items-center gap-2">
+            <Link to="/page-not-found">
+              <div className="flex items-center gap-2 border border-[#F6F6F5] hover:border hover:border-[#73bd3a] hover:rounded-sm p-2">
+                <IoNotifications color="#73bd3a" />
+                <p className="text-[#73bd3a]">Notifications</p>
+              </div>
+            </Link>
+            <Link to="/page-not-found">
+              <div className="flex items-center gap-2 border border-[#F6F6F5] hover:border hover:border-[#73bd3a] hover:rounded-sm p-2">
+                <AiOutlineQuestionCircle color="#73bd3a"/>
+                <p className="text-[#73bd3a]">Help</p>
+              </div>
+            </Link>
+            <Link to="/page-not-found">
+              <div className="flex items-center gap-2 border border-[#F6F6F5] hover:border hover:border-[#73bd3a] hover:rounded-sm p-2">
+                <IoGlobeOutline color="#73bd3a"/>
+                <p className="text-[#73bd3a]">English</p>
+                <IoChevronDown color="#73bd3a"/>
+              </div>
+            </Link>
             <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
-              <h1 className="text-[#fff] flex items-center">
-                {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
-                <IoIosArrowForward className="ml-1" />
-              </h1>
+              <div className={`${styles.button}`}>
+                <h1 className="text-[#fff] flex items-center">
+                  {isSeller ? "Go Dashboard" : "Become Seller"}{" "}
+                  <IoIosArrowForward className="ml-1" />
+                </h1>
+              </div>
             </Link>
           </div>
         </div>
