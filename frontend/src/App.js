@@ -13,6 +13,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
 import Error from "./pages/Error.jsx";
+import { ShopHomePage } from "./ShopRoutes.js";
 
 // Pages
 import {
@@ -97,7 +98,7 @@ const App = () => {
   );
 };
 
-const AppContent = ({stripeApikey, isVisible}) => {
+const AppContent = ({stripeApikey}) => {
   const location = useLocation();
   const [isPopupActive, setIsPopupActive] = useState(false);
 
@@ -213,7 +214,7 @@ const AppContent = ({stripeApikey, isVisible}) => {
           path="/shop/:id"
           element={
             <SellerProtectedRoute>
-              <HomePage />
+              <ShopHomePage />
             </SellerProtectedRoute>
           }
         />
