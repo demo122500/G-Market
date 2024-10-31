@@ -25,7 +25,7 @@ const PopupBanner = ({isVisible, onClose}) => {
 				<button onClick={onClose}>
 					<IoCloseCircle color="white" size={40} className="absolute top-2 right-2 cursor-pointer"/>
 				</button>
-				<img src={assets.popup_banner} alt="" style={{filter: "drop-shadow(0 0 10rem black)"}}/>
+				<img src={assets.popup_banner2} alt="" style={{filter: "drop-shadow(0 0 10rem black)"}}/>
 			</div>
     </div>
   )

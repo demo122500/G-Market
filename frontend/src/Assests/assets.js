@@ -21,9 +21,11 @@ import nestle_logo from "./nestle.png";
 import head_n_shoulder from "./head_shoulder.png";
 
 import popup_banner from "./popup-banner1.png";
+import popup_banner2 from "./gmarket-banner2.png";
 
 export const assets = {
   popup_banner,
+  popup_banner2,
 
   comp_logo,
   g_market_logo,
