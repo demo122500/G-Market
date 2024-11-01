@@ -125,7 +125,7 @@ const AllCoupons = () => {
         <div className="w-full mx-8 pt-1 mt-10 bg-white">
           <div className="w-full flex justify-end">
             <div
-              className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
+              className={`${styles.button} !w-max !h-[45px] px-4 !rounded-[5px] mr-4 mb-4`}
               onClick={() => setOpen(true)}
             >
               <span className="text-white">Create Coupon Code</span>
@@ -137,6 +137,7 @@ const AllCoupons = () => {
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="m-4"
           />
           {open && (
             <div className="fixed top-0 left-0 w-full h-screen bg-[#00000062] z-[20000] flex items-center justify-center">

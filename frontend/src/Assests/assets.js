@@ -1,5 +1,6 @@
 import comp_logo from "./gmall-logo.png";
 import g_market_logo from "./g-market-logo.png";
+import g_market_logo_white from "./g-market-logo-white.png";
 import g_large from "./g_large.png";
 import g_logo from "./g-logo.png";
 import banner1 from "./banner1.png";
@@ -29,6 +30,7 @@ export const assets = {
 
   comp_logo,
   g_market_logo,
+  g_market_logo_white,
   g_large,
   g_logo,
   banner1,

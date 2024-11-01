@@ -94,6 +94,7 @@ const AllRefundOrders = () => {
             pageSize={10}
             disableSelectionOnClick
             autoHeight
+            className="m-4"
           />
         </div>
       )}

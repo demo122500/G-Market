@@ -1,14 +1,16 @@
+/* eslint-disable jsx-a11y/role-supports-aria-props */
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { server } from "../../server";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { TfiGallery } from "react-icons/tfi";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
+
 const ENDPOINT = "https://socket-ecommerce-tu68.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
@@ -22,7 +24,7 @@ const DashboardMessages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [activeStatus, setActiveStatus] = useState(false);
-  const [images, setImages] = useState();
+  const [setImages] = useState();
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
 
@@ -272,6 +274,7 @@ const MessageList = ({
   const [active, setActive] = useState(0);
 
   useEffect(() => {
+    // eslint-disable-next-line eqeqeq
     const userId = data.members.find((user) => user != me);
 
     const getUser = async () => {
@@ -287,8 +290,8 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 ${
-        active === index ? "bg-[#00000010]" : "bg-transparent"
+      className={`flex p-4 px-4 ${
+        active === index ? "bg-[#00000010] mx-8" : "bg-transparent"
       }  cursor-pointer`}
       onClick={(e) =>
         setActive(index) ||
@@ -312,7 +315,7 @@ const MessageList = ({
       </div>
       <div className="pl-3">
         <h1 className="text-[18px]">{user?.name}</h1>
-        <p className="text-[16px] text-[#000c]">
+        <p className="text-[14px] text-slate-500">
           {!isLoading && data?.lastMessageId !== user?._id
             ? "You:"
             : user?.name.split(" ")[0] + ": "}{" "}
@@ -358,7 +361,7 @@ const SellerInbox = ({
       </div>
 
       {/* messages */}
-      <div className="px-3 h-[65vh] py-3 overflow-y-scroll">
+      <div className="px-8 h-[65vh] py-4 overflow-y-scroll">
         {messages &&
           messages.map((item, index) => {
             return (
@@ -379,19 +382,20 @@ const SellerInbox = ({
                   <img
                     src={`${item.images?.url}`}
                     className="w-[300px] h-[300px] object-cover rounded-[10px] mr-2"
+                    alt={item.name}
                   />
                 )}
                 {item.text !== "" && (
-                  <div>
+                  <div className="relative">
                     <div
-                      className={`w-max p-2 rounded ${
+                      className={`w-max p-4 rounded ${
                         item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]"
                       } text-[#fff] h-min`}
                     >
                       <p>{item.text}</p>
                     </div>
 
-                    <p className="text-[12px] text-[#000000d3] pt-1">
+                    <p className="text-[14px] text-slate-500 pt-1">
                       {format(item.createdAt)}
                     </p>
                   </div>
@@ -404,7 +408,7 @@ const SellerInbox = ({
       {/* send message input */}
       <form
         aria-required={true}
-        className="p-3 relative w-full flex justify-between items-center"
+        className="p-4 relative w-full flex justify-between items-center gap-4"
         onSubmit={sendMessageHandler}
       >
         <div className="w-[30px]">
@@ -416,23 +420,23 @@ const SellerInbox = ({
             onChange={handleImageUpload}
           />
           <label htmlFor="image">
-            <TfiGallery className="cursor-pointer" size={20} />
+            <TfiGallery className="cursor-pointer" size={30} />
           </label>
         </div>
         <div className="w-full">
           <input
             type="text"
             required
-            placeholder="Enter your message..."
+            placeholder="Type your message..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className={`${styles.input}`}
+            className={`${styles.input} p-4`}
           />
           <input type="submit" value="Send" className="hidden" id="send" />
           <label htmlFor="send">
             <AiOutlineSend
               size={20}
-              className="absolute right-4 top-5 cursor-pointer"
+              className="absolute right-8 top-8 cursor-pointer"
             />
           </label>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
@@ -62,7 +62,7 @@ const DashboardHero = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/dashboard/order/${params.id}`}>
+            <Link to={`/order/${params.id}`}>
               <Button>
                 <AiOutlineArrowRight size={20} />
               </Button>
@@ -85,9 +85,9 @@ const DashboardHero = () => {
   });
   return (
     <div className="w-full p-8">
-      <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
+      <h3 className="text-2xl font-Poppins pb-2">Overview</h3>
       <div className="w-full block 800px:flex items-center justify-between">
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+        <div className="w-full flex flex-col gap-8 mb-4 800px:w-[30%] bg-white shadow-lg rounded-2xl p-8">
           <div className="flex items-center">
             <AiOutlineMoneyCollect
               size={30}
@@ -98,16 +98,16 @@ const DashboardHero = () => {
               className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}
             >
               Account Balance{" "}
-              <span className="text-[16px]">(with 10% service charge)</span>
+              <span className="text-[16px]">(10% service charge)</span>
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">${availableBalance}</h5>
-          <Link to="/dashboard-withdraw-money">
-            <h5 className="pt-4 pl-[2] text-[#077f9c]">Withdraw Money</h5>
+          <h5 className="text-4xl font-bold self-center">${availableBalance}</h5>
+          <Link to="/dashboard-withdraw-money" className="bg-[#73bd3a] hover:bg-[#73bd3a]/80 self-start p-2 px-4 rounded-full">
+            <h5 className="text-black text-[14px]">Withdraw Money</h5>
           </Link>
         </div>
 
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+        <div className="w-full flex flex-col gap-8 mb-4 800px:w-[30%] bg-white shadow-lg rounded-2xl p-8">
           <div className="flex items-center">
             <MdBorderClear size={30} className="mr-2" fill="#00000085" />
             <h3
@@ -116,13 +116,13 @@ const DashboardHero = () => {
               All Orders
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{orders && orders.length}</h5>
-          <Link to="/dashboard-orders">
-            <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
+          <h5 className="text-4xl font-bold self-center">{orders && orders.length}</h5>
+          <Link to="/dashboard-orders" className="bg-[#73bd3a] hover:bg-[#73bd3a]/80 self-start p-2 px-4 rounded-full">
+            <h5 className="text-black text-[14px]">View Orders</h5>
           </Link>
         </div>
 
-        <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+        <div className="w-full flex flex-col gap-8 mb-4 800px:w-[30%] bg-white shadow-lg rounded-2xl p-8">
           <div className="flex items-center">
             <AiOutlineMoneyCollect
               size={30}
@@ -135,9 +135,9 @@ const DashboardHero = () => {
               All Products
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{products && products.length}</h5>
-          <Link to="/dashboard-products">
-            <h5 className="pt-4 pl-2 text-[#077f9c]">View Products</h5>
+          <h5 className="text-4xl font-bold self-center">{products && products.length}</h5>
+          <Link to="/dashboard-products" className="bg-[#73bd3a] hover:bg-[#73bd3a]/80 self-start p-2 px-4 rounded-full">
+            <h5 className="text-black text-[14px]">View Products</h5>
           </Link>
         </div>
       </div>
