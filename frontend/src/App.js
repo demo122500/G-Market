@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -8,7 +8,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Components
-import PopupBanner from "./components/PopupBanner.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import SellerProtectedRoute from "./routes/SellerProtectedRoute";
@@ -70,6 +69,8 @@ import { getAllEvents } from "./redux/actions/event";
 
 // Config
 import { server } from "./server";
+import ShopCreateBanner from "./pages/Shop/ShopCreateBanner.jsx";
+import ShopAllBanners from "./pages/Shop/ShopAllBanners.jsx";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -93,35 +94,6 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <AppContent stripeApikey={stripeApikey} />
-    </BrowserRouter>
-  );
-};
-
-const AppContent = ({stripeApikey}) => {
-  const location = useLocation();
-  const [isPopupActive, setIsPopupActive] = useState(false);
-
-  useEffect(() => {
-    setIsPopupActive(true);
-  }, []);
-
-  useEffect(() => {
-    if (isPopupActive) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-    console.log("Popup active:", isPopupActive);
-    
-    return () => document.body.classList.remove("no-scroll");
-  }, [isPopupActive]);
-
-  return (
-    <>
-      {/* Popup banner visible on all pages */}
-      {location.pathname === "/" && (<PopupBanner isVisible={isPopupActive}  onClose={() => setIsPopupActive(false)} />)}
-
       {/* Stripe Payment Routes */}
       {stripeApikey && (
         <Elements stripe={loadStripe(stripeApikey)}>
@@ -206,7 +178,7 @@ const AppContent = ({stripeApikey}) => {
           }
         />
         <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
-        
+
         {/* Shop Routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
         <Route path="/shop-login" element={<ShopLoginPage />} />
@@ -234,6 +206,25 @@ const AppContent = ({stripeApikey}) => {
             </SellerProtectedRoute>
           }
         />
+
+        <Route
+          path="/dashboard-create-banner"
+          element={
+            <SellerProtectedRoute>
+              <ShopCreateBanner />
+            </SellerProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard-all-banners"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllBanners />
+            </SellerProtectedRoute>
+          }
+        />
+
         <Route
           path="/dashboard-create-product"
           element={
@@ -314,7 +305,7 @@ const AppContent = ({stripeApikey}) => {
             </SellerProtectedRoute>
           }
         />
-        
+
         {/* Admin Routes */}
         <Route
           path="/admin/dashboard"
@@ -387,8 +378,8 @@ const AppContent = ({stripeApikey}) => {
         pauseOnHover
         theme="dark"
       />
-    </>
-  )
-}
+    </BrowserRouter>
+  );
+};
 
 export default App;

@@ -7,7 +7,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "https://gmarket-delta.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -44,6 +44,7 @@ const order = require("./controller/order");
 const conversation = require("./controller/conversation");
 const message = require("./controller/message");
 const withdraw = require("./controller/withdraw");
+const banner = require("./controller/banner");
 
 app.use("/api/v2/user", user);
 app.use("/api/v2/conversation", conversation);
@@ -55,6 +56,7 @@ app.use("/api/v2/event", event);
 app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
+app.use("/api/v2/banner", banner);
 
 // it's for ErrorHandling
 app.use(ErrorHandler);
