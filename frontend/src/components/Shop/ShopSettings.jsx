@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url, server } from "../../server";
+import { server } from "../../server";
 import { AiOutlineCamera } from "react-icons/ai";
 import styles from "../../styles/styles";
 import axios from "axios";
@@ -63,7 +63,7 @@ const ShopSettings = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        toast.success("Shop info updated succesfully!");
+        toast.success("Shop updated successfully");
         dispatch(loadSeller());
       })
       .catch((error) => {
@@ -75,20 +75,20 @@ const ShopSettings = () => {
     <div className="w-full min-h-screen flex flex-col items-center">
       <div className="flex w-full 800px:w-[80%] flex-col justify-center my-5">
         <div className="w-full flex items-center justify-center">
-          <div className="relative">
+          <div className="relative rounded-full">
             <img
               src={avatar ? avatar : `${seller.avatar?.url}`}
               alt=""
               className="w-[200px] h-[200px] rounded-full cursor-pointer"
             />
-            <div className="w-[30px] h-[30px] bg-[#E3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[15px]">
+            <div className="w-[30px] h-[30px] bg-gray-100 rounded-full flex items-center justify-center cursor-pointer absolute bottom-6 right-6">
               <input
                 type="file"
                 id="image"
                 className="hidden"
                 onChange={handleImage}
               />
-              <label htmlFor="image">
+              <label htmlFor="image" className="cursor-pointer">
                 <AiOutlineCamera />
               </label>
             </div>
@@ -97,6 +97,7 @@ const ShopSettings = () => {
 
         {/* shop info */}
         <form
+          // eslint-disable-next-line jsx-a11y/aria-props
           aria-aria-required={true}
           className="flex flex-col items-center"
           onSubmit={updateHandler}
@@ -110,7 +111,7 @@ const ShopSettings = () => {
               placeholder={`${seller.name}`}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 p-4 800px:mb-0 text-[#73bd3a] font-semibold`}
               required
             />
           </div>
@@ -127,7 +128,7 @@ const ShopSettings = () => {
               }`}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 p-4 800px:mb-0 text-[#73bd3a] font-semibold`}
             />
           </div>
           <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
@@ -139,7 +140,7 @@ const ShopSettings = () => {
               placeholder={seller?.address}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 p-4 800px:mb-0 text-[#73bd3a] font-semibold`}
               required
             />
           </div>
@@ -153,7 +154,7 @@ const ShopSettings = () => {
               placeholder={seller?.phoneNumber}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 p-4 800px:mb-0 text-[#73bd3a] font-semibold`}
               required
             />
           </div>
@@ -167,7 +168,7 @@ const ShopSettings = () => {
               placeholder={seller?.zipCode}
               value={zipCode}
               onChange={(e) => setZipcode(e.target.value)}
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 p-4 800px:mb-0 text-[#73bd3a] font-semibold`}
               required
             />
           </div>
@@ -175,8 +176,7 @@ const ShopSettings = () => {
           <div className="w-[100%] flex items-center flex-col 800px:w-[50%] mt-5">
             <input
               type="submit"
-              value="Update Shop"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] p-4 800px:mb-0 bg-[#73bd3a] hover:bg-[#73bd3a]/80 cursor-pointer`}
               required
               readOnly
             />

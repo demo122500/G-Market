@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBanners } from "../redux/actions/banner";
+import { Link } from "react-router-dom";
 
 const PopupBanner = ({ isVisible, onClose }) => {
   const dispatch = useDispatch();
@@ -33,15 +34,18 @@ const PopupBanner = ({ isVisible, onClose }) => {
       className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
     >
-      <div className="bg-transparent w-[400px] p-2 rounded-sm text-center relative">
+      <div className="w-[400px] p-2 rounded-sm text-center relative">
         <button onClick={onClose}>
-          <IoCloseCircle color="white" size={40} className="absolute top-2 right-2 cursor-pointer" />
+          <IoCloseCircle color="white" size={35} className="absolute top-1 right-1 cursor-pointer" />
         </button>
-        <img
-          src={banner.imageUrl || "https://via.placeholder.com/400"}
-          alt={banner.name || "Banner"}
-          style={{ filter: "drop-shadow(0 0 10rem black)" }}
-        />
+        <Link to="/page-not-found">
+          <img
+            className="object-contain"
+            src={banner.imageUrl || "https://via.placeholder.com/400"}
+            alt={banner.name || "Banner"}
+            style={{ filter: "drop-shadow(0 0 10rem black)" }}
+          />
+        </Link>
       </div>
     </div>
   );

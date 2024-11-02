@@ -30,6 +30,7 @@ const CreateProduct = () => {
       navigate("/dashboard");
       window.location.reload();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, error, success]);
 
   const handleImageChange = (e) => {
@@ -237,12 +238,11 @@ const CreateProduct = () => {
           </div>
           <br />
           <div>
-            <button
+            <input
               type="submit"
+              value="Create Product"
               className="mt-2 cursor-pointer bg-[#73bd3a] hover:bg-[#73bd3a]/80 appearance-none text-center block w-full px-4 p-4 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            >
-              Create
-            </button>
+            />
           </div>
         </div>
       </form>

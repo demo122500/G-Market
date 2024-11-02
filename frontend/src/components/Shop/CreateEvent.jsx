@@ -290,12 +290,11 @@ const CreateEvent = () => {
           </div>
           <br />
           <div>
-            <button
+            <input
               type="submit"
+              value="Create Event"
               className="mt-2 cursor-pointer appearance-none text-center bg-[#73bd3a] hover:bg-[#73bd3a]/80 block w-full px-4 p-4 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            >
-              Create
-            </button>
+            />
           </div>
         </div>
       </form>
