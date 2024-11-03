@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  AiFillHeart,
-  AiOutlineHeart,
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -19,7 +16,7 @@ import {
 import { server } from "../../../server";
 import { IoCloseCircleOutline, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { HiMinus, HiPlus } from "react-icons/hi";
-import { IoIosInformationCircle, IoIosInformationCircleOutline, IoMdInformation } from "react-icons/io";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
   const { user, isAuthenticated } = useSelector((state) => state.user);
