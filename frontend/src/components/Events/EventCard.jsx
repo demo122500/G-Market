@@ -27,12 +27,13 @@ const EventCard = ({ active, data }) => {
   };
   return (
     <div
-      className={`bg-transparent w-full block rounded-lg ${
+      className={`relative h-[70vh] w-full rounded-lg ${
         active ? "unset" : "mb-2"
-      } lg:flex`}
+      } overflow-hidden`}
     >
+      {/* Video Background */}
       <video
-        style={{ height: "75%", width: "100%", objectFit: "cover" }}
+        className="h-full w-full object-cover"
         autoPlay
         muted
         loop
@@ -40,42 +41,56 @@ const EventCard = ({ active, data }) => {
       >
         <source src={eventcard_bg} type="video/mp4" />
       </video>
-      <div className="w-[91.6%] h-[71.7%] absolute flex justify-center items-center">
-        <div className="w-[50%] lg:w-[70%] m-auto">
-          <img
-            className="w-[480px] ml-8 rounded-md"
-            src={`${data.images[0]?.url}`}
-            alt=""
-          />
-        </div>
 
-        <div className="w-full p-[20px] lg:[w-50%] flex flex-col justify-center">
-          <h2 className={`${styles.productTitle}`}>{data.name}</h2>
-          <p>{data.description}</p>
-          <div className="flex py-2 justify-between">
-            <div className="flex">
-              <h5 className="font-[500] text-[18px] text-[#d55b45] pr-3 line-through">
-                {data.originalPrice}$
-              </h5>
-              <h5 className="font-bold text-[20px] text-[#333] font-Roboto">
-                {data.discountPrice}$
-              </h5>
-            </div>
-            <span className="pr-3 font-[400] text-[17px] text-[#44a55e]">
-              {data.sold_out} sold
-            </span>
+      {/* Gradient Overlay */}
+      {/* <div className="absolute inset-0 bg-gradient-to-r from-green-800/50 via-green-500/30 to-green-800/50" /> */}
+
+      {/* Content Container */}
+      <div className="absolute inset-0 flex justify-center items-center px-8 py-12">
+        <div className="relative flex border border-white/10 flex-col md:flex-row w-full max-w-[1200px] items-center gap-8 backdrop-blur-lg rounded-lg p-6 shadow-2xl">
+          {/* Product Image */}
+          <div className="flex-shrink-0">
+            <img
+              style={{ filter: "drop-shadow(0 0 3rem black)" }}
+              className="w-[300px] lg:w-[400px] rounded-lg"
+              src={`${data.images[0]?.url}`}
+              alt="Product"
+            />
           </div>
-          <CountDown data={data} />
-          <br />
-          <div className="flex items-center">
-            <Link to={`/product/${data._id}?isEvent=true`}>
-              <div className={`${styles.button} text-[#fff]`}>See Details</div>
-            </Link>
-            <div
-              className={`${styles.button} text-[#fff] ml-5`}
-              onClick={() => addToCartHandler(data)}
-            >
-              Add to Cart
+
+          {/* Product Information */}
+          <div className="flex flex-col justify-center w-full max-w-[600px] text-white">
+            <h2 className="text-2xl font-semibold mb-2">{data.name}</h2>
+            <p className="text-gray-100 mb-4">{data.description}</p>
+
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <h5 className="text-lg font-medium text-red-500 line-through pr-2">
+                  ${data.originalPrice}
+                </h5>
+                <h5 className="text-xl font-bold text-white">
+                  ${data.discountPrice}
+                </h5>
+              </div>
+              <span className="text-md text-green-200 font-semibold">
+                {data.sold_out} sold
+              </span>
+            </div>
+
+            <CountDown data={data} />
+
+            <div className="flex items-center gap-4 mt-6">
+              <Link to={`/product/${data._id}?isEvent=true`}>
+                <div className="bg-green-600 text-white py-2 px-6 rounded-md shadow-md cursor-pointer hover:bg-green-700 transition">
+                  See Details
+                </div>
+              </Link>
+              <button
+                className="bg-green-600 text-white py-2 px-6 rounded-md shadow-md cursor-pointer hover:bg-green-700 transition"
+                onClick={() => addToCartHandler(data)}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         </div>
