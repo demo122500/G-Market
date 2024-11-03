@@ -13,6 +13,7 @@ import mastercard from "./mastercard.png";
 import discover from "./discover.png";
 import card_icon from "./card.png";
 import paypal from "./paypal.png";
+import product_bg from "./product-bg.png";
 
 import tide_logo from "./tide.png";
 import virginia_logo from "./virginia.png";
@@ -43,6 +44,7 @@ export const assets = {
   discover,
   card_icon,
   paypal,
+  product_bg,
 
   // sponsors
   tide_logo,

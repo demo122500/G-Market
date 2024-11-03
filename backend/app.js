@@ -5,9 +5,17 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const allowedOrigins = ["https://gmarket-delta.vercel.app", "http://localhost:3000"];
+
 app.use(
   cors({
-    origin: "https://gmarket-delta.vercel.app",
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );

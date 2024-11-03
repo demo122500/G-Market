@@ -59,8 +59,16 @@ const ProductCard = ({ data, isEvent }) => {
 
   // Improve 10/21/2024
   return (
-    <div className="w-full h-[380px] rounded-lg shadow-2xl p-8 relative cursor-pointer">
-      <div className="flex justify-end"></div>
+    <div
+      className="w-full h-[380px] rounded-lg shadow-2xl p-8 relative cursor-pointer"
+      style={{
+        backgroundImage: `url(${assets.product_bg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "100",
+      }}
+    >
       <Link
         to={`${
           isEvent ? `/product/${data._id}?isEvent=true` : `/product/${data._id}`
@@ -68,13 +76,18 @@ const ProductCard = ({ data, isEvent }) => {
       >
         <img
           //src={`${data.images && data.images[0]?.url}`}
-          src={data.images?.[0]?.url ||  (assets.g_logo)}
+          src={data.images?.[0]?.url || assets.g_logo}
           alt={data.name || "Product"}
-          className="w-full h-[170px] object-contain hover:scale-[1.3] transition-[0.3s]"
+          className="w-full h-[170px] object-contain hover:scale-[1.1] transition-[0.3s]"
         />
       </Link>
-      <Link className="flex items-start justify-start" to={`/shop/preview/${data?.shop._id}`}>
-        <h5 className={`${styles.shop_name} bg-[#73bd3a]/20 px-4 rounded-full`}>{data.shop.name}</h5>
+      <Link
+        className="flex items-start justify-start"
+        to={`/shop/preview/${data?.shop._id}`}
+      >
+        <h5 className={`${styles.shop_name} bg-[#73bd3a]/20 px-4 rounded-full`}>
+          {data.shop.name}
+        </h5>
       </Link>
       <Link
         to={`${

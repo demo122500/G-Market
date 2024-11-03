@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { 
-  AiFillHeart, 
-  AiOutlineHeart, 
-  AiOutlineMessage, 
-  AiOutlineShoppingCart 
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineMessage,
+  AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,8 +12,14 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import styles from "../../../styles/styles";
 import { addTocart } from "../../../redux/actions/cart";
-import { addToWishlist, removeFromWishlist } from "../../../redux/actions/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../redux/actions/wishlist";
 import { server } from "../../../server";
+import { IoCloseCircleOutline, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
+import { HiMinus, HiPlus } from "react-icons/hi";
+import { IoIosInformationCircle, IoIosInformationCircleOutline, IoMdInformation } from "react-icons/io";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
   const { user, isAuthenticated } = useSelector((state) => state.user);
@@ -38,11 +44,14 @@ const ProductDetailsCard = ({ setOpen, data }) => {
       const { _id: sellerId } = data.shop;
       const groupTitle = `${data._id}${userId}`;
 
-      const { data: res } = await axios.post(`${server}/conversation/create-new-conversation`, {
-        groupTitle,
-        userId,
-        sellerId,
-      });
+      const { data: res } = await axios.post(
+        `${server}/conversation/create-new-conversation`,
+        {
+          groupTitle,
+          userId,
+          sellerId,
+        }
+      );
       navigate(`/inbox?${res.conversation._id}`);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong.");
@@ -50,7 +59,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   };
 
   const adjustCount = (type) => {
-    setCount((prev) => (type === "increment" ? prev + 1 : Math.max(1, prev - 1)));
+    setCount((prev) =>
+      type === "increment" ? prev + 1 : Math.max(1, prev - 1)
+    );
   };
 
   const addToCartHandler = () => {
@@ -84,36 +95,48 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
   // Improve 10/21/2024
   return (
-    <div className="bg-white fixed inset-0 z-40 flex items-center justify-center bg-opacity-30 shadow-2xl">
-      <div className="w-[90%] 800px:w-[60%] h-[70vh] 800px:h-[62vh] overflow-y-scroll bg-white rounded-md shadow-sm p-4 relative">
-        <RxCross1
-          size={20}
+    <div
+      className="fixed inset-0 z-40 flex items-center justify-center"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+    >
+      <div className="w-full h-[60vh] 800px:w-[60%] bg-white rounded-md shadow-sm p-4 relative">
+        <IoCloseCircleOutline
+          size={30}
           className="absolute right-3 top-3 cursor-pointer"
           onClick={() => setOpen(false)}
         />
 
-        <div className="block 800px:flex">
+        <div className="800px:flex flex w-full h-full p-4">
           {/* Product Image and Seller Info */}
-          <div className="w-full 800px:w-[50%]">
-            <img src={data.images?.[0]?.url} alt={data.name} />
+          <div className="relative w-full 800px:w-[50%] flex flex-col items-center mt-4">
+            <img
+              className="w-[340px] h-[340px] object-contain"
+              src={data.images?.[0]?.url}
+              alt={data.name}
+            />
 
-            <div className="flex items-center mt-4">
-              <Link to={`/shop/preview/${data.shop._id}`} className="flex items-center">
+            <div className="absolute bottom-0 flex flex-col items-start self-start gap-4">
+              <Link
+                to={`/shop/preview/${data.shop._id}`}
+                className="flex items-center"
+              >
                 <img
                   src={data.shop.avatar?.url || data.images?.[0]?.url}
                   alt={data.shop.name}
                   className="w-[50px] h-[50px] rounded-full mr-2"
                 />
-                <div>
-                  <h3 className={styles.shop_name}>{data.shop.name}</h3>
-                  <h5 className="text-[15px]">{data.ratings?.toFixed(2) || 0} Ratings</h5>
+                <div className="relatve left-0">
+                  <h3 className="text-xl text-[#73bd3a] font-semibold">
+                    {data.shop.name}
+                  </h3>
+                  <h5 className="text-[15px]">
+                    {data.ratings?.toFixed(2) || 0} Ratings
+                  </h5>
                 </div>
               </Link>
-            </div>
 
-            <div className="flex items-center gap-4 mt-4">
               <button
-                className={`${styles.button} text-white h-11 rounded-md`}
+                className="flex  items-center p-2 px-4 rounded-md bg-[#73bd3a] text-white"
                 onClick={handleMessageSubmit}
               >
                 <AiOutlineMessage className="mr-2" />
@@ -123,53 +146,79 @@ const ProductDetailsCard = ({ setOpen, data }) => {
           </div>
 
           {/* Product Details */}
-          <div className="w-full 800px:w-[50%] px-5 pt-5">
-            <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
-            <p className="mt-2">{data.description}</p>
+          <div className="relative w-full 800px:w-[50%] p-2 flex flex-col items-start gap-6">
+            <h1
+              className={`${styles.productTitle} text-2xl truncate-two-lines`}
+            >
+              {data.name}
+            </h1>
+            <p className="text-justify truncate-seven-lines">
+              {data.description}
+            </p>
 
-            <div className="flex items-center pt-3">
-              <h4 className={`${styles.productDiscountPrice}`}>{data.discountPrice}$</h4>
-              {data.originalPrice && (
-                <h3 className={`${styles.price} ml-2`}>{data.originalPrice}$</h3>
-              )}
+            <div className="flex flex-col items-start">
+              <div className="flex items-center gap-4">
+                <h4 className="text-2xl font-semibold">
+                  ${data.discountPrice}
+                </h4>
+                {data.originalPrice && (
+                  <h3 className="line-through mb-2 text-red-500">
+                    ${data.originalPrice}
+                  </h3>
+                )}
+              </div>
+
+              <h5 className="text-[#73bd3a] font-medium">
+                {data.sold_out} Sold
+              </h5>
             </div>
-            <h5 className="text-green-500 font-medium mt-1">
-              {data.sold_out} Sold
-            </h5>
 
-            <div className="flex items-center mt-8 mb-8 justify-between">
-              <div className="flex items-center">
+            <div className="w-full flex items-center justify-between">
+              <div className="flex items-center gap-4 rounded-md border-green-500">
                 <button
-                  className="bg-[#73bd3a] text-white px-4 py-2 rounded-l shadow hover:opacity-75"
                   onClick={() => adjustCount("decrement")}
+                  className="bg-[#73bd3a] rounded-l-md p-2 text-lg font-bold"
                 >
-                  -
+                  <HiMinus color="white" />
                 </button>
-                <span className="px-4 py-2 border border-[#73bd3a] text-gray-800">{count}</span>
+                <p>{count}</p>
                 <button
-                  className="bg-[#73bd3a] text-white px-4 py-2 rounded-r shadow hover:opacity-75"
                   onClick={() => adjustCount("increment")}
+                  className="bg-[#73bd3a] rounded-r-md p-2 text-lg font-bold"
                 >
-                  +
+                  <HiPlus color="white" />
                 </button>
               </div>
 
               <div onClick={toggleWishlistHandler}>
                 {isWishlisted ? (
-                  <AiFillHeart size={30} color="red" className="cursor-pointer" />
+                  <IoHeartSharp
+                    size={30}
+                    color="red"
+                    className="cursor-pointer"
+                  />
                 ) : (
-                  <AiOutlineHeart size={30} className="cursor-pointer" />
+                  <IoHeartOutline size={30} className="cursor-pointer" />
                 )}
               </div>
             </div>
 
-            <button
-              className={`${styles.button} w-full h-11 rounded-md mt-4 flex items-center justify-center`}
-              onClick={addToCartHandler}
-            >
-              <AiOutlineShoppingCart className="mr-2" />
-              Add to Cart
-            </button>
+            <div className="absolute bottom-0 left-0 w-full flex items-center justify-center gap-4 p-2">
+              <button
+                className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] rounded-sm"
+                onClick={addToCartHandler}
+              >
+                <AiOutlineShoppingCart />
+                Add to Cart
+              </button>
+
+              <Link to={`/product/${data._id}`} className="w-full">
+                <button className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] rounded-sm">
+                  <IoIosInformationCircleOutline size={20} />
+                  More Info
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

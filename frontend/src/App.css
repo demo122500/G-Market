@@ -113,3 +113,29 @@ input[type="number"] {
     transform: translateX(100%);
   }
 }
+
+.text-glow {
+  color: #fff; /* Sets the base color of the text */
+  text-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.7),   /* Outer glow */
+    0 0 12px rgba(255, 255, 255, 0.5),  /* Medium glow */
+    0 0 16px rgba(255, 255, 255, 0.3);  /* Inner glow */
+}
+
+.truncate-two-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.2em; /* Adjust based on font size */
+}
+
+.truncate-seven-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 10; /* Limits to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 10rem; /* Adjust based on font size */
+}

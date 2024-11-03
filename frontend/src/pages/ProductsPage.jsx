@@ -6,7 +6,6 @@ import Header from "../components/Layout/Header";
 import Loader from "../components/Layout/Loader";
 import ProductCard from "../components/Route/ProductCard/ProductCard";
 import styles from "../styles/styles";
-import { assets } from "../Assests/assets";
 
 const ProductsPage = () => {
   const [searchParams] = useSearchParams();
