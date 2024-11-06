@@ -135,12 +135,12 @@ const EventCard = ({ active, data }) => {
             <p className="text-gray-100 mb-4 text-lg">{data.description}</p>
 
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <h5 className="text-base font-medium text-red-500 line-through pr-2">
-                  ${data.originalPrice}
+              <div className="flex items-center gap-4">
+                <h5 className="text-2xl font-semibold text-white">
+                  ₱ <span className="text-[20px] font-semibold">{data.discountPrice}</span>
                 </h5>
-                <h5 className="text-2xl font-bold text-white">
-                  ${data.discountPrice}
+                <h5 className="text-base font-medium text-red-500 line-through mb-4">
+                  ₱ <span className="text-[14px]">{data.originalPrice}</span>
                 </h5>
               </div>
               <span className="text-md text-green-200 font-semibold">

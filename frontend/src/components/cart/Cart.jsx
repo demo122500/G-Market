@@ -138,7 +138,7 @@ const Cart = ({ setOpenCart }) => {
                     <h1 className="text-[#fff] text-[18px]">
                       Checkout Now{" "}
                       <span className="text-[#000] font-[700] ml-[10px]">
-                        ${totalPrice.toFixed(2)}
+                        ₱{totalPrice.toFixed(2)}
                       </span>
                     </h1>
                   )}
@@ -200,10 +200,10 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
             {data.name}
           </h1>
           <h4 className="font-[400] text-[15px] text-[#00000082]">
-            ${data.discountPrice} * {value}
+            ₱{data.discountPrice} * {value}
           </h4>
           <h4 className="font-[600] text-[16px] pt-[3px] text-[#d02222] font-Roboto">
-            Total Amount: ${totalPrice}
+            Total Amount: ₱{totalPrice}
           </h4>
         </div>
         <RxCrossCircled

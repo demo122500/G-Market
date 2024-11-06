@@ -8,7 +8,6 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import animationData from "../../Assests/animations/button_loader.json";
-import animationDataTwo from "../../Assests/animations/button_loader.json";
 import Lottie from "react-lottie";
 
 const Checkout = () => {
@@ -346,22 +345,22 @@ const CartData = ({
     <div className="w-full rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Subtotal</h3>
-        <h5 className="text-[18px] font-[600]">${subTotalPrice.toFixed()}</h5>
+        <h5 className="text-[18px] font-[600]">₱{subTotalPrice.toFixed()}</h5>
       </div>
       <br />
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Shipping</h3>
-        <h5 className="text-[18px] font-[600]">${shipping.toFixed(2)}</h5>
+        <h5 className="text-[18px] font-[600]">₱{shipping.toFixed(2)}</h5>
       </div>
       <br />
       <div className="flex justify-between border-b border-[#333] pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount</h3>
         <h5 className="text-[18px] font-[600]">
-          - {discountPercentenge ? "$" + discountPercentenge.toString() : null}
+          - {discountPercentenge ? "₱" + discountPercentenge.toString() : null}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-[#ff0000] text-end pt-3">
-        ${totalPrice}
+        ₱{totalPrice}
       </h5>
       <br />
       <form onSubmit={handleSubmit}>

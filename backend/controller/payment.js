@@ -22,7 +22,7 @@ router.post(
       // Create a payment intent with Stripe
       const myPayment = await stripe.paymentIntents.create({
         amount: amount, // Amount should be in smallest unit (cents/paisa)
-        currency: "usd", // Ensure the currency matches the front-end
+        currency: "php", // Ensure the currency matches the front-end
         metadata: {
           company: "G-Market", // You can add any additional metadata here
         },

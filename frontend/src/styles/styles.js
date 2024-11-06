@@ -3,7 +3,7 @@ const styles = {
   heading: 'text-[27px] text-[#73BD3A] text-center md:text-start font-[600] font-Roboto mb-4',
   section:'w-11/12 mx-auto',
   productTitle: 'text-[25px] font-[600] font-Roboto text-[#333]',
-  productDiscountPrice:"font-bold text-[18px] text-[#333] font-Roboto",
+  productDiscountPrice:"font-semibold text-[18px] text-[#333] font-Poppins",
   price:"font-[500] text-[16px] text-[#d55b45] pl-3 mt-[-4px] line-through",
   shop_name:"py-1 my-4 text-[12px] text-green-900",
   active_indicator:"absolute bottom-[-27%] left-0 h-[3px] w-full bg-[crimson]",

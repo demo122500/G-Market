@@ -96,11 +96,12 @@ const ProductDetailsCard = ({ setOpen, data }) => {
       className="fixed inset-0 z-40 flex items-center justify-center"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
     >
-      <div className="w-full h-[60vh] 800px:w-[60%] bg-white rounded-md shadow-sm p-4 relative">
+      <div className="w-full h-[60vh] 800px:w-[60%] backdrop-blur-lg bg-[#73bd3a]/20 rounded-md shadow-2xl p-4 relative">
         <IoCloseCircleOutline
           size={30}
           className="absolute right-3 top-3 cursor-pointer"
           onClick={() => setOpen(false)}
+          color="white"
         />
 
         <div className="800px:flex flex w-full h-full p-4">
@@ -133,7 +134,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               </Link>
 
               <button
-                className="flex  items-center p-2 px-4 rounded-md bg-[#73bd3a] text-white"
+                className="flex  items-center p-2 px-4 rounded-md bg-[#73bd3a] hover:bg-[#73bd3a]/80"
                 onClick={handleMessageSubmit}
               >
                 <AiOutlineMessage className="mr-2" />
@@ -156,16 +157,16 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             <div className="flex flex-col items-start">
               <div className="flex items-center gap-4">
                 <h4 className="text-2xl font-semibold">
-                  ${data.discountPrice}
+                  ₱ <span className="text-[22px]">{data.discountPrice}</span>
                 </h4>
                 {data.originalPrice && (
                   <h3 className="line-through mb-2 text-red-500">
-                    ${data.originalPrice}
+                    ₱ <span className="text-[14px]">{data.originalPrice}</span>
                   </h3>
                 )}
               </div>
 
-              <h5 className="text-[#73bd3a] font-medium">
+              <h5 className="text-[#ccc] font-semibold">
                 {data.sold_out} Sold
               </h5>
             </div>
@@ -202,7 +203,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
             <div className="absolute bottom-0 left-0 w-full flex items-center justify-center gap-4 p-2">
               <button
-                className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] rounded-sm"
+                className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] hover:bg-[#73bd3a]/80 rounded-sm"
                 onClick={addToCartHandler}
               >
                 <AiOutlineShoppingCart />
@@ -210,7 +211,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               </button>
 
               <Link to={`/product/${data._id}`} className="w-full">
-                <button className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] rounded-sm">
+                <button className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] hover:bg-[#73bd3a]/80 rounded-sm">
                   <IoIosInformationCircleOutline size={20} />
                   More Info
                 </button>

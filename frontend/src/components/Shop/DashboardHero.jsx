@@ -79,7 +79,7 @@ const DashboardHero = () => {
     row.push({
         id: item._id,
         itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
-        total: "US$ " + item.totalPrice,
+        total: "₱ " + item.totalPrice,
         status: item.status,
       });
   });
@@ -101,7 +101,7 @@ const DashboardHero = () => {
               <span className="text-[16px]">(10% service charge)</span>
             </h3>
           </div>
-          <h5 className="text-4xl font-bold self-center">${availableBalance}</h5>
+          <h5 className="text-4xl font-bold self-center">₱{availableBalance}</h5>
           <Link to="/dashboard-withdraw-money" className="bg-[#73bd3a] hover:bg-[#73bd3a]/80 self-start p-2 px-4 rounded-full">
             <h5 className="text-black text-[14px]">Withdraw Money</h5>
           </Link>
