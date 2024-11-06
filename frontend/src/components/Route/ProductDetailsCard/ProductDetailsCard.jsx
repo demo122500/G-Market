@@ -99,7 +99,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
       <div className="w-full h-[60vh] 800px:w-[60%] backdrop-blur-lg bg-[#73bd3a]/20 rounded-md shadow-2xl p-4 relative">
         <IoCloseCircleOutline
           size={30}
-          className="absolute right-3 top-3 cursor-pointer"
+          className="absolute right-3 top-3 cursor-pointer hover:bg-white/20 rounded-full"
           onClick={() => setOpen(false)}
           color="white"
         />
@@ -172,7 +172,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             </div>
 
             <div className="w-full flex items-center justify-between">
-              <div className="flex items-center gap-4 rounded-md border-green-500">
+              <div className="flex items-center gap-4 rounded-md border border-[#73bd3a]">
                 <button
                   onClick={() => adjustCount("decrement")}
                   className="bg-[#73bd3a] rounded-l-md p-2 text-lg font-bold"

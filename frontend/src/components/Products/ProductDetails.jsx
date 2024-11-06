@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  AiFillHeart,
-  AiOutlineHeart,
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
@@ -18,6 +16,8 @@ import { addTocart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 import Ratings from "./Ratings";
 import axios from "axios";
+import { HiMinus, HiPlus } from "react-icons/hi";
+import { IoCard, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 
 const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -118,24 +118,19 @@ const ProductDetails = ({ data }) => {
         <div className={`${styles.section} w-[90%] 800px:w-[80%]`}>
           <div className="w-full py-5">
             <div className="block w-full 800px:flex">
-              <div className="w-full 800px:w-[50%]">
-                <img
-                  src={`${data && data.images[select]?.url}`}
-                  alt=""
-                  className="w-[80%]"
-                />
-                <div className="w-full flex">
+              <div className="w-full 800px:w-[50%] p-4 flex items-center justify-center">
+                <div className="w-[20%] flex flex-col items-center gap-2">
                   {data &&
                     data.images.map((i, index) => (
                       <div
                         className={`${
-                          select === 0 ? "border" : "null"
+                          select === 0 ? "border border-green-500" : "null"
                         } cursor-pointer`}
                       >
                         <img
                           src={`${i?.url}`}
                           alt=""
-                          className="h-[200px] overflow-hidden mr-3 mt-3"
+                          className="h-[120px] w-[120px] object-contain overflow-hidden"
                           onClick={() => setSelect(index)}
                         />
                       </div>
@@ -146,40 +141,48 @@ const ProductDetails = ({ data }) => {
                     } cursor-pointer`}
                   ></div>
                 </div>
+                <div className="w-[80%]">
+                  <img
+                    src={`${data && data.images[select]?.url}`}
+                    alt=""
+                    className="object-contain w-full h-full"
+                  />
+                </div>
               </div>
-              <div className="w-full 800px:w-[50%] pt-5">
-                <h1 className={`${styles.productTitle}`}>{data.name}</h1>
-                <p>{data.description}</p>
+              <div className="w-full 800px:w-[50%] flex flex-col gap-8 p-12">
+                <div className="flex flex-col items-start gap-2">
+                  <h1 className={`${styles.productTitle}`}>{data.name}</h1>
+                  <p>{data.description}</p>
+                </div>
+
                 <div className="flex pt-3">
-                  <h4 className={`${styles.productDiscountPrice}`}>
-                    ₱{data.discountPrice}
+                  <h4 className="text-4xl">
+                    ₱<span className="text-3xl">{data.discountPrice}</span>
                   </h4>
                   <h3 className={`${styles.price}`}>
-                    {data.originalPrice ? data.originalPrice + "₱" : null}
+                    {data.originalPrice ? "₱" + data.originalPrice : null}
                   </h3>
                 </div>
 
-                <div className="flex items-center mt-12 justify-between pr-3">
-                  <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 rounded-md border border-[#73bd3a]">
                     <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
                       onClick={decrementCount}
+                      className="bg-[#73bd3a] rounded-l-md p-2 text-lg font-bold"
                     >
-                      -
+                      <HiMinus color="white" />
                     </button>
-                    <span className="bg-gray-200 text-gray-800 font-medium px-4 py-[11px]">
-                      {count}
-                    </span>
+                    <p>{count}</p>
                     <button
-                      className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
                       onClick={incrementCount}
+                      className="bg-[#73bd3a] rounded-r-md p-2 text-lg font-bold"
                     >
-                      +
+                      <HiPlus color="white" />
                     </button>
                   </div>
                   <div>
                     {click ? (
-                      <AiFillHeart
+                      <IoHeartSharp
                         size={30}
                         className="cursor-pointer"
                         onClick={() => removeFromWishlistHandler(data)}
@@ -187,7 +190,7 @@ const ProductDetails = ({ data }) => {
                         title="Remove from wishlist"
                       />
                     ) : (
-                      <AiOutlineHeart
+                      <IoHeartOutline
                         size={30}
                         className="cursor-pointer"
                         onClick={() => addToWishlistHandler(data)}
@@ -197,38 +200,49 @@ const ProductDetails = ({ data }) => {
                     )}
                   </div>
                 </div>
-                <div
-                  className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
-                  onClick={() => addToCartHandler(data._id)}
-                >
-                  <span className="text-white flex items-center">
-                    Add to cart <AiOutlineShoppingCart className="ml-1" />
-                  </span>
-                </div>
-                <div className="flex items-center pt-8">
-                  <Link to={`/shop/preview/${data?.shop._id}`}>
-                    <img
-                      src={`${data?.shop?.avatar?.url}`}
-                      alt=""
-                      className="w-[50px] h-[50px] rounded-full mr-2"
-                    />
+
+                <div className="flex items-center gap-8">
+                  <button onClick={() => addToCartHandler(data._id)} className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] hover:bg-[#73bd3a]/80 rounded-sm">
+                    <AiOutlineShoppingCart />
+                    Add to Cart
+                  </button>
+                  <Link to="/checkout" className="w-full">
+                    <button className="w-full flex items-center justify-center gap-2 p-4 bg-[#73bd3a] hover:bg-[#73bd3a]/80 rounded-sm">
+                      <IoCard />
+                      Buy Now
+                    </button>
                   </Link>
-                  <div className="pr-8">
+                </div>
+
+                <div className="relative -bottom-12 w-full flex items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <Link to={`/shop/preview/${data?.shop._id}`}>
-                      <h3 className={`${styles.shop_name} pb-1 pt-1`}>
-                        {data.shop.name}
-                      </h3>
+                      <img
+                        src={`${data?.shop?.avatar?.url}`}
+                        alt=""
+                        className="w-[70px] h-[70px] rounded-full"
+                      />
                     </Link>
-                    <h5 className="pb-3 text-[15px]">
-                      ({averageRating}/5) Ratings
-                    </h5>
+
+                    <div className="flex flex-col">
+                      <Link to={`/shop/preview/${data?.shop._id}`}>
+                        <h3 className="text-xl font-semibold">
+                          {data.shop.name}
+                        </h3>
+                      </Link>
+                      <h5 className="text-[14px] text-slate-700">
+                        ({averageRating}/5) Ratings
+                      </h5>
+                    </div>
                   </div>
+
                   <div
-                    className={`${styles.button} bg-[#6443d1] mt-4 !rounded !h-11`}
+                    className={`${styles.button} bg-[#6443d1] !rounded !h-11`}
                     onClick={handleMessageSubmit}
                   >
-                    <span className="text-white flex items-center">
-                      Send Message <AiOutlineMessage className="ml-1" />
+                    <span className="text-white flex items-center gap-2">
+                      <AiOutlineMessage />
+                      Send Message 
                     </span>
                   </div>
                 </div>
