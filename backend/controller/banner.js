@@ -6,7 +6,7 @@ const cloudinary = require("cloudinary").v2;
 // Create banner with Cloudinary image upload
 router.post("/create", async (req, res) => {
   try {
-    const { image, name, link } = req.body;
+    const { image, name, license, description, duration, link } = req.body;
 
     if (!image || !name) {
       return res
@@ -23,6 +23,9 @@ router.post("/create", async (req, res) => {
     const newBanner = new Banner({
       imageUrl: result.secure_url,
       name,
+      description,
+      duration,
+      license,
       link,
       public_id: result.public_id,
     });

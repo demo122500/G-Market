@@ -3,7 +3,7 @@ import { server } from "../../server";
 
 // Create banner
 export const createBanner =
-  (title, description, image, shopId) => async (dispatch) => {
+  (title, license, image, description, duration, shopId) => async (dispatch) => {
     try {
       dispatch({
         type: "bannerCreateRequest",
@@ -11,7 +11,9 @@ export const createBanner =
 
       const { data } = await axios.post(`${server}/banner/create-banner`, {
         title,
+        license,
         description,
+        duration,
         image,
         shopId,
       });

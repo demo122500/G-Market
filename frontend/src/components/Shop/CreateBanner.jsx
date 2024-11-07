@@ -5,7 +5,10 @@ import styles from '../../styles/styles';
 
 const CreateBanner = () => {
   const [banner, setBanner] = useState("");  // To store base64 image
-  const [name, setName] = useState("");      // To store banner name
+  const [name, setName] = useState(""); // To store banner name
+  const [description, setDescription] = useState("");
+  const [license, setLicense] = useState(""); // banner license
+  const [duration, setDuration] = useState(""); // banner duration
   const navigate = useNavigate();
 
   // Handle image file selection and preview
@@ -28,7 +31,7 @@ const CreateBanner = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ image: banner, name }),  // Include both name and image
+        body: JSON.stringify({ image: banner, name, description, duration, license }),  // Include both name and image
       });
 
       if (!response.ok) throw new Error("Failed to upload banner");
@@ -41,24 +44,65 @@ const CreateBanner = () => {
   };
 
   return (
-    <div className='bg-white flex flex-col items-center rounded-2xl p-4 gap-12 py-8 w-[580px] h-full'>
+    <div className='w-[80%] h-full bg-white flex flex-col items-center rounded-2xl p-4 gap-12 py-8'>
       <h2 className='text-2xl text-black font-semibold'>Create Banner</h2>
       <div className='px-12 flex flex-col items-start w-full'>
+        <div className='w-full flex items-center gap-8'>
+          <div className='flex flex-col items-start w-full gap-2 mb-6'>
+            {/* Name Input */}
+            <label htmlFor="name">Banner Title<span className='text-red-500'>*</span></label>
+            <input 
+              required
+              type="text" 
+              placeholder="Enter banner name" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              className='p-4 border rounded w-full'
+            />
+          </div>
+
+          <div className='flex flex-col items-start w-full gap-2 mb-6'>
+            {/* duration Input */}
+            <label htmlFor="duration ">Banner Duration</label>
+            <input 
+              type="text" 
+              placeholder="Enter banner duration" 
+              value={duration} 
+              onChange={(e) => setDuration(e.target.value)} 
+              className='p-4 border rounded w-full'
+            />
+          </div>
+
+          <div className='flex flex-col items-start w-full gap-2 mb-6'>
+            {/* License Input */}
+            <label htmlFor="license">License No.</label>
+            <input 
+              type="number" 
+              placeholder="Enter License No." 
+              value={license} 
+              onChange={(e) => setLicense(e.target.value)} 
+              className='p-4 border rounded w-full'
+            />
+          </div>
+        </div>
+
         <div className='flex flex-col items-start w-full gap-2 mb-6'>
-          {/* Name Input */}
-          <label htmlFor="name">Enter your banner name <span className='text-red-500'>*</span></label>
-          <input 
-            type="text" 
-            placeholder="Enter banner name" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-            className='p-2 border rounded w-full'
-          />
+          {/* Desc Input */}
+          <label htmlFor="description">Banner Description</label>
+          <textarea
+            placeholder='Enter banner description'
+            name="description"
+            onChange={(e) => setDescription(e.target.value)} 
+            className='p-4 border rounded w-full resize-none h-[100px] outline-none'
+          >
+            {description}
+          </textarea>
         </div>
 
         {/* Hidden File Input with Label Trigger */}
         <label htmlFor=''>Upload Banner <span className='text-red-500'>*</span></label>
         <input
+          required
           type="file"
           id="upload"
           className="hidden"
@@ -69,13 +113,15 @@ const CreateBanner = () => {
         </label>
 
         {/* Preview Selected Image */}
-        {banner && (
-          <img
-            src={banner}
-            alt="Selected preview"
-            className="self-center h-[180px] w-[160px] object-contain m-2 rounded"
-          />
-        )}
+        <div className="self-center h-[200px] w-[180px] border m-2 rounded-2xl">
+          {banner && (
+              <img
+                src={banner}
+                alt="Selected preview"
+                className="object-contain h-full w-full p-2"
+              />
+          )}
+        </div>
 
         {/* Submit Button */}
         <button className={`${styles.button}`} onClick={handleSubmit}>Upload Banner</button>

@@ -8,8 +8,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { server } from "../../server";
 import styles from "../../styles/styles";
-import { DataGrid } from "@material-ui/data-grid";
-import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { MdTrackChanges } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
@@ -24,6 +22,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
+import { formatDistanceToNowStrict, isToday, isYesterday } from "date-fns";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -31,7 +30,7 @@ const ProfileContent = ({ active }) => {
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState(null);
+  const [setAvatar] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -207,81 +206,110 @@ const AllOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllOrdersOfUser(user._id));
-  }, []);
+    if (!user._id) {
+      dispatch(getAllOrdersOfUser(user._id));
+    }
+  }, [dispatch, user?._id]);
 
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+  // Categorize orders based on their creation date and exclude "Delivered" status
+  const categorizeOrders = (orders) => {
+    const categories = {
+      Today: [],
+      Yesterday: [],
+      "This Week": [],
+      Older: [],
+      Delivered: [],
+    };
 
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-
-    {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/user/order/${params.id}`}>
-              <Button>
-                <AiOutlineArrowRight size={20} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-    },
-  ];
-
-  const row = [];
-
-  orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "₱ " + item.totalPrice,
-        status: item.status,
-      });
+    orders?.forEach((order) => {
+      const orderDate = new Date(order.createdAt);
+      if (order.status === "Delivered") {
+        categories.Delivered.push(order);
+      } else if (isToday(orderDate)) {
+        categories.Today.push(order);
+      } else if (isYesterday(orderDate)) {
+        categories.Yesterday.push(order);
+      } else if (formatDistanceToNowStrict(orderDate).includes("day")) {
+        categories["This Week"].push(order);
+      } else {
+        categories.Older.push(order);
+      }
     });
 
+    return categories;
+  };
+
+  const categorizedOrders = orders ? categorizeOrders([...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))) : {};
+
   return (
-    <div className="pl-8 pt-1">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
-        autoHeight
-      />
+    <div className="w-full p-6">
+      {Object.entries(categorizedOrders).map(([category, ordersList]) => (
+        category !== "Delivered" && ordersList.length > 0 && (
+          <div key={category} className="mb-8">
+            <h2 className="text-lg font-bold text-gray-700 mb-4">{category}</h2>
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {ordersList.map((order) => (
+                <div key={order._id} className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white">
+                  <div className="flex items-start space-x-6">
+                    <img
+                      src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                      alt="Product"
+                      className="w-28 h-28 object-cover rounded-lg"
+                    />
+                    <div className="flex flex-col space-y-1 text-gray-600">
+                      <p className="text-sm text-gray-500">Order Date: <span className="text-[12px] font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span></p>
+                      <p className="text-sm">Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span></p>
+                      <p className="text-sm">Items Qty: {order.cart.length}</p>
+                      <p>Total: ₱{order.totalPrice}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center pt-2 gap-2">
+                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
+                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
+                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
+                    <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
+                      <AiOutlineArrowRight size={18} className="text-blue-500" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      ))}
+
+      {categorizedOrders.Delivered.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-lg font-bold text-gray-700 mb-4">Delivered</h2>
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {categorizedOrders.Delivered.map((order) => (
+              <div key={order._id} className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white">
+                <div className="flex items-start space-x-6">
+                  <img
+                    src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                    alt="Product"
+                    className="w-28 h-28 object-cover rounded-lg"
+                  />
+                  <div className="flex flex-col space-y-1 text-gray-600">
+                    <p className="text-sm text-gray-500">Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span></p>
+                    <p className="text-sm">Status: <span className="font-semibold text-green-600">Delivered</span></p>
+                    <p className="text-sm">Items Qty: {order.cart.length}</p>
+                    <p>Total: ₱{order.totalPrice}</p>
+                  </div>
+                </div>
+                <div className="flex items-center pt-2 gap-2">
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
+                  <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
+                    <AiOutlineArrowRight size={18} className="text-blue-500" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -292,84 +320,53 @@ const AllRefundOrders = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllOrdersOfUser(user._id));
-  }, []);
+    if (user?._id) {
+      dispatch(getAllOrdersOfUser(user._id));
+    }
+  }, [dispatch, user?._id]);
 
-  const eligibleOrders =
-    orders && orders.filter((item) => item.status === "Processing refund");
-
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-
-    {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/user/order/${params.id}`}>
-              <Button>
-                <AiOutlineArrowRight size={20} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-    },
-  ];
-
-  const row = [];
-
-  eligibleOrders &&
-    eligibleOrders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "₱ " + item.totalPrice,
-        status: item.status,
-      });
-    });
+  const eligibleOrders = orders?.filter((item) => item.status === "Processing refund");
 
   return (
-    <div className="pl-8 pt-1">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={10}
-        autoHeight
-        disableSelectionOnClick
-      />
+    <div className="w-full p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Refund Orders</h2>
+
+      {eligibleOrders?.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {eligibleOrders.map((order) => (
+            <div key={order._id} className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4">
+              <div className="flex items-start space-x-4">
+                <img
+                  src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                  alt="Product"
+                  className="w-28 h-28 object-cover rounded-lg"
+                />
+                <div className="flex flex-col space-y-1 text-gray-600">
+                  <p className="text-sm">Order ID: <span className="font-semibold">{order._id}</span></p>
+                  <p className="text-sm text-gray-500">
+                    Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span>
+                  </p>
+                  <p className="text-sm">
+                    Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span>
+                  </p>
+                  <p className="text-sm">Items Qty: {order.cart.length}</p>
+                  <p>Total: ₱{order.totalPrice}</p>
+                </div>
+              </div>
+              <div className="flex items-center pt-2 gap-2">
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
+                <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
+                  <AiOutlineArrowRight size={18} className="text-blue-500" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">No orders eligible for a refund found.</p>
+      )}
     </div>
   );
 };
@@ -380,81 +377,51 @@ const TrackOrder = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllOrdersOfUser(user._id));
-  }, []);
-
-  const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
-    {
-      field: "status",
-      headerName: "Status",
-      minWidth: 130,
-      flex: 0.7,
-      cellClassName: (params) => {
-        return params.getValue(params.id, "status") === "Delivered"
-          ? "greenColor"
-          : "redColor";
-      },
-    },
-    {
-      field: "itemsQty",
-      headerName: "Items Qty",
-      type: "number",
-      minWidth: 130,
-      flex: 0.7,
-    },
-
-    {
-      field: "total",
-      headerName: "Total",
-      type: "number",
-      minWidth: 130,
-      flex: 0.8,
-    },
-
-    {
-      field: " ",
-      flex: 1,
-      minWidth: 150,
-      headerName: "",
-      type: "number",
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/user/track/order/${params.id}`}>
-              <Button>
-                <MdTrackChanges size={20} />
-              </Button>
-            </Link>
-          </>
-        );
-      },
-    },
-  ];
-
-  const row = [];
-
-  orders &&
-    orders.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "₱ " + item.totalPrice,
-        status: item.status,
-      });
-    });
+    if (user?._id) {
+      dispatch(getAllOrdersOfUser(user._id));
+    }
+  }, [dispatch, user?._id]);
 
   return (
-    <div className="pl-8 pt-1">
-      <DataGrid
-        rows={row}
-        columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
-        autoHeight
-      />
+    <div className="w-full p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Track Your Orders</h2>
+
+      {orders?.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {orders.map((order) => (
+            <div key={order._id} className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4">
+              <div className="flex items-start space-x-4">
+                <img
+                  src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                  alt="Product"
+                  className="w-28 h-28 object-cover rounded-lg"
+                />
+                <div className="flex flex-col space-y-1 text-gray-600">
+                  <p className="text-sm truncate" title={order._id}>Ref ID: <span className="font-semibold">{order._id}</span></p>
+                  <p className="text-sm text-gray-500">
+                    Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span>
+                  </p>
+                  <p className="text-sm">
+                    Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span>
+                  </p>
+                  <p className="text-sm">Items Qty: {order.cart.length}</p>
+                  <p>Total: ₱{order.totalPrice}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between pt-2 gap-2">
+                <Link to="/products">
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Continue Shopping</button>
+                </Link>
+                <Link to={`/user/track/order/${order._id}`} className="flex items-center pl-2">
+                  <MdTrackChanges size={18} className="text-blue-500" />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">You have no orders to track at the moment.</p>
+      )}
     </div>
   );
 };

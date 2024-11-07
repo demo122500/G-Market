@@ -9,6 +9,15 @@ const bannerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  license: {
+    type: Number,
+  },
+  description: {
+    type: String,
+  },
+  duration: {
+    type: String,
+  },
   link: {
     type: String, // Optional, in case you want the banner to link to something
   },

@@ -45,7 +45,22 @@ const PopupBanner = ({ isVisible, onClose }) => {
             alt={banner.name || "Banner"}
             style={{ filter: "drop-shadow(0 0 10rem black)" }}
           />
-        </Link>
+          </Link>
+          <div>
+            {banner.description && (
+              <p className="text-[12px] text-white">{banner.description}</p>
+            )}
+          </div>
+          <div>
+            {banner.duration && (
+              <p className="text-[12px] text-white">{banner.duration}</p>
+            )}
+          </div>
+          <div>
+            {banner.license && (
+              <p className="text-[12px] text-white">DTI Fair Trade Permit No. FTEB-{banner.license} Series of 2024.</p>
+            )}
+          </div>
       </div>
     </div>
   );

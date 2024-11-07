@@ -94,8 +94,8 @@ const ShopProfileData = ({ isOwner }) => {
               ))}
           </div>
           {events && events.length === 0 && (
-            <h5 className="w-full text-center py-5 text-[18px]">
-              No Events have for this shop!
+            <h5 className="w-full text-center my-52 text-2xl">
+              No active events as of now!
             </h5>
           )}
         </div>
@@ -122,9 +122,9 @@ const ShopProfileData = ({ isOwner }) => {
               </div>
             ))}
           {allReviews && allReviews.length === 0 && (
-            <h5 className="w-full text-center py-5 text-[18px]">
-              No Reviews have for this shop!
-            </h5>
+              <h5 className="w-full text-2xl text-center my-52">
+                No ratings yet!
+              </h5>
           )}
         </div>
       )}

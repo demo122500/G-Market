@@ -29,6 +29,8 @@ const AllBanners = () => {
               <tr>
                 <th className="p-4 border-b">Banner ID</th>
                 <th className="p-4 border-b">Name</th>
+                <th className="p-4 border-b">Duration</th>
+                <th className="p-4 border-b">License No.</th>
                 <th className="p-4 border-b">Preview</th>
                 <th className="p-4 border-b">Actions</th>
               </tr>
@@ -38,6 +40,8 @@ const AllBanners = () => {
                 <tr key={banner._id}>
                   <td className="p-4 border-b">{banner._id}</td>
                   <td className="p-4 border-b">{banner.name}</td>
+                  <td className="p-4 border-b">{banner.duration}</td>
+                  <td className="p-4 border-b">{banner.license}</td>
                   <td className="p-4 border-b">
                     <img
                       src={banner.imageUrl}
