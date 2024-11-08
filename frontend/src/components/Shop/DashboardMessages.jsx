@@ -12,7 +12,7 @@ import socketIO from "socket.io-client";
 import { format } from "timeago.js";
 
 const ENDPOINT = "https://socket-gold-ten.vercel.app/";
-const socketId = socketIO(ENDPOINT, { transports: ["websocket"], withCredentials: true });
+const socketId = socketIO(ENDPOINT, { transports: ["websocket", "polling"], withCredentials: true });
 
 const DashboardMessages = () => {
   const { seller,isLoading } = useSelector((state) => state.seller);
