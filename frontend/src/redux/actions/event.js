@@ -33,7 +33,7 @@ export const getAllEventsShop = (id) => async (dispatch) => {
     });
 
     const response = await axios.get(`${server}/event/get-all-events/${id}`);
-    console.log("Response from get all events of a shop:", response);
+    // console.log("Response from get all events of a shop:", response);
 
     dispatch({
       type: "getAlleventsShopSuccess",
@@ -83,7 +83,7 @@ export const getAllEvents = () => async (dispatch) => {
     });
 
     const response = await axios.get(`${server}/event/get-all-events`);
-    console.log("Response from get all events:", response);
+    // console.log("Response from get all events:", response);
 
     dispatch({
       type: "getAlleventsSuccess",

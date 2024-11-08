@@ -32,7 +32,7 @@ const ProfileSidebar = ({ setActive, active }) => {
       .then((res) => {
         toast.success(res.data.message);
         window.location.reload(true);
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error.response.data.message);
@@ -145,7 +145,7 @@ const ProfileSidebar = ({ setActive, active }) => {
           >
             <MdOutlineAdminPanelSettings
               size={20}
-              color={active === 7 ? "#73bd3a" : ""}
+              color={active === 8 ? "#73bd3a" : ""}
             />
             <span
               className={`pl-3 ${

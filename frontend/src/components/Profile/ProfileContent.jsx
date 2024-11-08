@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { getAllOrdersOfUser } from "../../redux/actions/order";
 import { formatDistanceToNowStrict, isToday, isYesterday } from "date-fns";
+import UserInbox from "../../pages/UserInbox";
 
 const ProfileContent = ({ active }) => {
   const { user, error, successMessage } = useSelector((state) => state.user);
@@ -42,7 +43,7 @@ const ProfileContent = ({ active }) => {
       toast.success(successMessage);
       dispatch({ type: "clearMessages" });
     }
-  }, [error, successMessage]);
+  }, [dispatch, error, successMessage]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,7 +78,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center px-32">
+    <div className="relative w-full flex flex-col items-center px-32 justify-center">
       {/* profile */}
       {active === 1 && (
         <>
@@ -110,7 +111,7 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Full Name</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] p-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] p-4 800px:mb-0 text-slate-500`}
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -120,7 +121,7 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Email Address</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] p-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] p-4 800px:mb-0 text-slate-500`}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -133,7 +134,7 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Phone Number</label>
                   <input
                     type="number"
-                    className={`${styles.input} !w-[95%] p-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] p-4 800px:mb-0 text-slate-500`}
                     required
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
@@ -144,7 +145,7 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Enter your password</label>
                   <input
                     type="password"
-                    className={`${styles.input} !w-[95%] p-4 800px:mb-0`}
+                    className={`${styles.input} !w-[95%] p-4 800px:mb-0 text-slate-500`}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -176,23 +177,30 @@ const ProfileContent = ({ active }) => {
         </div>
       )}
 
+      {/* message */}
+      {active === 4 && (
+        <div>
+          <UserInbox />
+        </div>
+      )}
+
       {/* Track order */}
       {active === 5 && (
-        <div>
+        <div className="absolute top-0">
           <TrackOrder />
         </div>
       )}
 
       {/* Change Password */}
       {active === 6 && (
-        <div>
+        <div className="w-full">
           <ChangePassword />
         </div>
       )}
 
       {/*  user Address */}
       {active === 7 && (
-        <div>
+        <div className="w-full absolute top-0 px-32">
           <Address />
         </div>
       )}
@@ -201,18 +209,25 @@ const ProfileContent = ({ active }) => {
 };
 
 const AllOrders = () => {
-  const { user } = useSelector((state) => state.user);
-  const { orders } = useSelector((state) => state.order);
+  const { user, loading: userLoading } = useSelector((state) => state.user);
+  const { orders, loading: ordersLoading, error } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user._id) {
+    if (user?._id) {
       dispatch(getAllOrdersOfUser(user._id));
     }
   }, [dispatch, user?._id]);
 
-  // Categorize orders based on their creation date and exclude "Delivered" status
-  const categorizeOrders = (orders) => {
+  if (userLoading || ordersLoading) {
+    return <div className="text-center p-6">Loading orders...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-6 text-red-500">Error: {error}</div>;
+  }
+
+  const categorizeOrders = (orders = []) => {
     const categories = {
       Today: [],
       Yesterday: [],
@@ -221,7 +236,7 @@ const AllOrders = () => {
       Delivered: [],
     };
 
-    orders?.forEach((order) => {
+    orders.forEach((order) => {
       const orderDate = new Date(order.createdAt);
       if (order.status === "Delivered") {
         categories.Delivered.push(order);
@@ -239,7 +254,8 @@ const AllOrders = () => {
     return categories;
   };
 
-  const categorizedOrders = orders ? categorizeOrders([...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))) : {};
+  const sortedOrders = [...(orders || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const categorizedOrders = categorizeOrders(sortedOrders);
 
   return (
     <div className="w-full p-6">
@@ -278,7 +294,7 @@ const AllOrders = () => {
         )
       ))}
 
-      {categorizedOrders.Delivered.length > 0 && (
+      {categorizedOrders.Delivered?.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Delivered</h2>
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -314,6 +330,7 @@ const AllOrders = () => {
   );
 };
 
+
 const AllRefundOrders = () => {
   const { user } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.order);
@@ -328,8 +345,8 @@ const AllRefundOrders = () => {
   const eligibleOrders = orders?.filter((item) => item.status === "Processing refund");
 
   return (
-    <div className="w-full p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Refund Orders</h2>
+    <div className="w-full p-6 flex flex-col items-center justify-center">
+      <h2 className="text-2xl font-bold text-gray-800">Refund Orders</h2>
 
       {eligibleOrders?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -451,7 +468,7 @@ const ChangePassword = () => {
       });
   };
   return (
-    <div className="w-full px-5">
+    <div className="w-full px-6 py-6 flex flex-col items-center gap-4">
       <h1 className="block text-[25px] text-center font-[600] text-[#000000ba] pb-2">
         Change Password
       </h1>
@@ -459,43 +476,47 @@ const ChangePassword = () => {
         <form
           aria-required
           onSubmit={passwordChangeHandler}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center gap-4 py-2"
         >
-          <div className=" w-[100%] 800px:w-[50%] mt-5">
+          <div className=" w-full 800px:w-[50%]">
             <label className="block pb-2">Enter your old password</label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0 p-4`}
               required
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
             />
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
+          <div className=" w-[100%] 800px:w-[50%]">
             <label className="block pb-2">Enter your new password</label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0 p-4`}
               required
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
           </div>
-          <div className=" w-[100%] 800px:w-[50%] mt-2">
+          <div className=" w-[100%] 800px:w-[50%]">
             <label className="block pb-2">Enter your confirm password</label>
             <input
               type="password"
-              className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+              className={`${styles.input} !w-[95%] mb-4 800px:mb-0 p-4`}
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <input
-              className={`w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-              required
+          </div>
+
+          <div className=" w-[100%] 800px:w-[50%]">
+            <button
+              className={`w-[95%] p-4 bg-[#73bd3a] text-center rounded-[3px] mt-8 cursor-pointer`}
               value="Update"
               type="submit"
-            />
+            >
+              Update Password
+            </button>
           </div>
         </form>
       </div>

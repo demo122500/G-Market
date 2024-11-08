@@ -4,7 +4,16 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+
+const io = socketIO(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Authorization"],
+    credentials: true,
+  },
+  transports: ['websocket'],
+});
 
 require("dotenv").config({
   path: "./.env",

@@ -38,7 +38,7 @@ export const getAllBanners = () => async (dispatch) => {
     });
 
     const { data } = await axios.get(`${server}/banner/get-banners`);
-    console.log("API response for getAllBanners:", data);
+    // console.log("API response for getAllBanners:", data);
     dispatch({
       type: "getAllBannersSuccess",
       payload: data.banners,

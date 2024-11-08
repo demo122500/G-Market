@@ -24,7 +24,7 @@ const HomePage = () => {
     } else {
       document.body.classList.remove("no-scroll");
     }
-    console.log("Popup active:", isPopupActive);
+    // console.log("Popup active:", isPopupActive);
 
     return () => document.body.classList.remove("no-scroll");
   }, [isPopupActive]);

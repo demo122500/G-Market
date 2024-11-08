@@ -7,17 +7,17 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: "LoadUserRequest",
     });
-    console.log("Sending request to load user");
+    // console.log("Sending request to load user");
     const { data } = await axios.get(`${server}/user/getuser`, {
       withCredentials: true,
     });
-    console.log("Received user data:", data);
+    // console.log("Received user data:", data);
     dispatch({
       type: "LoadUserSuccess",
       payload: data.user,
     });
   } catch (error) {
-    console.error("Error loading user:", error);
+    // console.error("Error loading user:", error);
     dispatch({
       type: "LoadUserFail",
       payload: error.response?.data?.message,
