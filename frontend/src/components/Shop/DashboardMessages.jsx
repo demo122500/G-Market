@@ -11,7 +11,7 @@ import { TfiGallery } from "react-icons/tfi";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
 
-const ENDPOINT = "https://socket-gold-ten.vercel.app/";
+const ENDPOINT = "https://socket-ke5o.onrender.com/";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket", "polling"], withCredentials: true });
 
 const DashboardMessages = () => {
