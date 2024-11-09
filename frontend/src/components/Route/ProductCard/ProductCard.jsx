@@ -59,7 +59,7 @@ const ProductCard = ({ data, isEvent }) => {
   // Improve 10/21/2024
   return (
     <div
-      className="w-full h-auto rounded-lg shadow-2xl p-8 relative cursor-pointer"
+      className="w-full h-auto rounded-lg shadow-2xl p-4 relative cursor-pointer"
       style={{
         backgroundImage: `url(${assets.product_bg})`,
         backgroundSize: "cover",
