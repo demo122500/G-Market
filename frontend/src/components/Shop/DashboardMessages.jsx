@@ -11,8 +11,8 @@ import { TfiGallery } from "react-icons/tfi";
 import socketIO from "socket.io-client";
 import { format } from "timeago.js";
 
-const ENDPOINT = "http://localhost:4000/";
-const socketId = socketIO(ENDPOINT, { transports: ["websocket"], withCredentials: true });
+const ENDPOINT = "https://socket-ke5o.onrender.com/";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket", "polling"], withCredentials: true });
 
 const DashboardMessages = () => {
   const { seller,isLoading } = useSelector((state) => state.seller);
