@@ -41,7 +41,7 @@ const Login = () => {
         setTimeout(() => {
           setIsLoading(false);
           navigate("/");
-          window.location.reload(true);  
+          window.location.reload(true);
         }, 3000);
       })
       .catch((err) => {
@@ -92,7 +92,9 @@ const Login = () => {
             customers.{" "}
           </p>
           <br />
-          <p className="text-3xl text-neutral-700">Thank you for choosing us!</p>
+          <p className="text-3xl text-neutral-700">
+            Thank you for choosing us!
+          </p>
           <div className="flex items-center mt-10">
             <AiFillFacebook size={30} className="cursor-pointer" color="#333" />
             <AiOutlineTwitter
@@ -112,16 +114,10 @@ const Login = () => {
             />
           </div>
         </div>
-        <div
-          className="bg-white/5 py-6 px-4 shadow-2xl sm:rounded-lg sm:px-8 w-[380px]"
-        >
+        <div className="bg-white/5 py-6 px-4 shadow-2xl sm:rounded-lg sm:px-8 w-[380px]">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="flex items-center justify-between sm:mx-auto sm:w-full sm:max-w-md">
-              <img
-                className="w-[120px]"
-                src={assets.g_market_logo}
-                alt=""
-              />
+              <img className="w-[120px]" src={assets.g_market_logo} alt="" />
               <h2 className="text-left text-2xl font-extrabold text-[#333]">
                 Log in
               </h2>
@@ -196,7 +192,7 @@ const Login = () => {
               </div>
               <div className="text-sm">
                 <a
-                  href=".forgot-password"
+                  href="forgot-password"
                   className="font-sm text-black hover:text-neutral-700"
                 >
                   Forgot your password?
@@ -216,7 +212,9 @@ const Login = () => {
                 )}
               </button>
             </div>
-            <div className={`${styles.noramlFlex} w-full flex items-center justify-center`}>
+            <div
+              className={`${styles.noramlFlex} w-full flex items-center justify-center`}
+            >
               <h4 className="text-neutral-700 text-sm">Don't have account?</h4>
               <Link
                 to="/sign-up"
@@ -227,9 +225,11 @@ const Login = () => {
             </div>
 
             <div className="flex flex-col items-center">
-              <p className="text-neutral-700 text-sm">OR</p>
-              <Link to="/shop-create" className="w-full">
-                <button className={`${styles.button} w-full`}>Login as Seller</button>
+              <p className="text-neutral-700 text-sm">Or</p>
+              <Link to="/shop-login" className="w-full">
+                <button className={`${styles.button} w-full`}>
+                  Login as Seller
+                </button>
               </Link>
             </div>
           </form>

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  AiOutlineMessage,
-  AiOutlineShoppingCart,
-} from "react-icons/ai";
+import { AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -14,7 +11,12 @@ import {
   removeFromWishlist,
 } from "../../../redux/actions/wishlist";
 import { server } from "../../../server";
-import { IoCloseCircleOutline, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
+import {
+  IoCloseCircleOutline,
+  IoHeartOutline,
+  IoHeartSharp,
+  IoStar,
+} from "react-icons/io5";
 import { HiMinus, HiPlus } from "react-icons/hi";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
@@ -127,8 +129,8 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                   <h3 className="text-xl text-[#73bd3a] font-semibold">
                     {data.shop.name}
                   </h3>
-                  <h5 className="text-[15px]">
-                    {data.ratings?.toFixed(2) || 0} Ratings
+                  <h5 className="text-sm text-white flex items-center gap-2">
+                    {data.ratings ? data.ratings?.toFixed(2) : "0"} <IoStar /> Ratings on this product
                   </h5>
                 </div>
               </Link>

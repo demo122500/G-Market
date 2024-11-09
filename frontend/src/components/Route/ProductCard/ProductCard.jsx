@@ -3,7 +3,6 @@ import {
   AiFillHeart,
   AiOutlineEye,
   AiOutlineHeart,
-  AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
@@ -60,7 +59,7 @@ const ProductCard = ({ data, isEvent }) => {
   // Improve 10/21/2024
   return (
     <div
-      className="w-full h-[380px] rounded-lg shadow-2xl p-8 relative cursor-pointer"
+      className="w-full h-auto rounded-lg shadow-2xl p-8 relative cursor-pointer"
       style={{
         backgroundImage: `url(${assets.product_bg})`,
         backgroundSize: "cover",
@@ -107,12 +106,18 @@ const ProductCard = ({ data, isEvent }) => {
         <div className="py-2 flex items-center justify-between">
           <div className="flex">
             <h5 className={`${styles.productDiscountPrice}`}>
-              ₱ <span className="text-base">{data.originalPrice === 0
+              ₱{" "}
+              <span className="text-base">
+                {data.originalPrice === 0
                   ? data.originalPrice
-                  : data.discountPrice}</span>
+                  : data.discountPrice}
+              </span>
             </h5>
             <h4 className={`${styles.price}`}>
-              ₱ <span className="text-[14px]">{data.originalPrice ? data.originalPrice : null}</span>
+              ₱{" "}
+              <span className="text-[14px]">
+                {data.originalPrice ? data.originalPrice : null}
+              </span>
             </h4>
           </div>
           <span className="font-[400] text-[17px] text-[#68d284]">
@@ -120,6 +125,12 @@ const ProductCard = ({ data, isEvent }) => {
           </span>
         </div>
       </Link>
+
+      <div className="w-full mt-2" onClick={() => addToCartHandler(data._id)}>
+        <button className="w-full p-2 bg-[#73bd3a] hover:bg-[#73bd3a]/80 rounded-md text-white">
+          Add to Cart
+        </button>
+      </div>
 
       {/* side options */}
       <div>
@@ -147,13 +158,13 @@ const ProductCard = ({ data, isEvent }) => {
           color="#333"
           title="Quick view"
         />
-        <AiOutlineShoppingCart
+        {/* <AiOutlineShoppingCart
           size={25}
           className="cursor-pointer absolute right-4 top-24"
           onClick={() => addToCartHandler(data._id)}
           color="#444"
           title="Add to cart"
-        />
+        /> */}
         {open ? <ProductDetailsCard setOpen={setOpen} data={data} /> : null}
       </div>
     </div>

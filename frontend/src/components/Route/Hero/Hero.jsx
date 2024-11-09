@@ -5,7 +5,6 @@ import { assets } from "../../../Assests/assets";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-import "./Hero.css";
 import animationData from "../../../Assests/animations/button_loader.json";
 import Lottie from "react-lottie";
 
@@ -15,8 +14,6 @@ const Hero = () => {
   const swiperRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -106,7 +103,10 @@ const Hero = () => {
             <div
               className={`${styles.section} absolute left-[70px] p-[16px] w-[auto] 800px:w-[60%]`}
             >
-              <Link to="/products" className="absolute -top-28 left-5 w-[390px]">
+              <Link
+                to="/products"
+                className="absolute -top-28 left-5 w-[390px]"
+              >
                 <div
                   className={`${styles.button} bg-white/20 hover:bg-white/30 shadow-2xl rounded-none border border-white/50 w-full`}
                 >
@@ -133,13 +133,12 @@ const Hero = () => {
                 className={`${styles.button} bg-white/10 hover:bg-white/30 border border-white/80 mt-[200px]`}
               >
                 {isLoading ? (
-                  <Lottie options={defaultOptions}  height={40} width={40} />
+                  <Lottie options={defaultOptions} height={40} width={40} />
                 ) : (
                   <span className="text-white font-[600] font-[Poppins] text-[16px] cursor-pointer">
                     Apply Now
                   </span>
                 )}
-
               </div>
             </div>
           </div>

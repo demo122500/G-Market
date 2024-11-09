@@ -105,7 +105,11 @@ const ProfileContent = ({ active }) => {
           <br />
           <br />
           <div className="w-full px-5">
-            <form onSubmit={handleSubmit} aria-required={true} className="flex flex-col items-center gap-8">
+            <form
+              onSubmit={handleSubmit}
+              aria-required={true}
+              className="flex flex-col items-center gap-8"
+            >
               <div className="w-full 800px:flex items-center gap-8 block">
                 <div className="w-full">
                   <label className="block pb-2">Full Name</label>
@@ -165,7 +169,7 @@ const ProfileContent = ({ active }) => {
 
       {/* order */}
       {active === 2 && (
-        <div>
+        <div className="absolute top-0">
           <AllOrders />
         </div>
       )}
@@ -210,7 +214,11 @@ const ProfileContent = ({ active }) => {
 
 const AllOrders = () => {
   const { user, loading: userLoading } = useSelector((state) => state.user);
-  const { orders, loading: ordersLoading, error } = useSelector((state) => state.order);
+  const {
+    orders,
+    loading: ordersLoading,
+    error,
+  } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -254,70 +262,154 @@ const AllOrders = () => {
     return categories;
   };
 
-  const sortedOrders = [...(orders || [])].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const sortedOrders = [...(orders || [])].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   const categorizedOrders = categorizeOrders(sortedOrders);
+
+  const hasOrders = Object.values(categorizedOrders).some(
+    (category) => category.length > 0
+  );
 
   return (
     <div className="w-full p-6">
-      {Object.entries(categorizedOrders).map(([category, ordersList]) => (
-        category !== "Delivered" && ordersList.length > 0 && (
-          <div key={category} className="mb-8">
-            <h2 className="text-lg font-bold text-gray-700 mb-4">{category}</h2>
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {ordersList.map((order) => (
-                <div key={order._id} className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white">
-                  <div className="flex items-start space-x-6">
-                    <img
-                      src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
-                      alt="Product"
-                      className="w-28 h-28 object-cover rounded-lg"
-                    />
-                    <div className="flex flex-col space-y-1 text-gray-600">
-                      <p className="text-sm text-gray-500">Order Date: <span className="text-[12px] font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span></p>
-                      <p className="text-sm">Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span></p>
-                      <p className="text-sm">Items Qty: {order.cart.length}</p>
-                      <p>Total: ₱{order.totalPrice}</p>
+      {!hasOrders ? (
+        <div className="flex flex-col items-center">
+          <h2 className="text-2xl font-bold text-gray-800">Shop Orders</h2>
+          <p className="text-gray-500">No orders yet.</p>
+          <Link to="/products">
+            <button className="flex  items-center gap-2 bg-[#73bd3a] p-2 px-4 rounded-md mt-2">
+              Start Shopping
+              <AiOutlineArrowRight />
+            </button>
+          </Link>
+        </div>
+      ) : (
+        Object.entries(categorizedOrders).map(
+          ([category, ordersList]) =>
+            category !== "Delivered" &&
+            ordersList.length > 0 && (
+              <div key={category} className="mb-8">
+                <h2 className="text-lg font-bold text-gray-700 mb-4">
+                  {category}
+                </h2>
+                <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {ordersList.map((order) => (
+                    <div
+                      key={order._id}
+                      className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white"
+                    >
+                      <div className="flex items-start space-x-6">
+                        <img
+                          src={
+                            order.cart[0]?.images[0]?.url ||
+                            "https://via.placeholder.com/150"
+                          }
+                          alt="Product"
+                          className="w-28 h-28 object-cover rounded-lg"
+                        />
+                        <div className="flex flex-col space-y-1 text-gray-600">
+                          <p className="text-sm text-gray-500">
+                            Order Date:{" "}
+                            <span className="text-[12px] font-semibold">
+                              {new Date(order.createdAt).toLocaleDateString()}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            Status:{" "}
+                            <span
+                              className={`font-semibold ${
+                                order.status === "Delivered"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {order.status}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            Items Qty: {order.cart.length}
+                          </p>
+                          <p>Total: ₱{order.totalPrice}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center pt-2 gap-2">
+                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                          Best Selling
+                        </button>
+                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                          Products
+                        </button>
+                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                          Events
+                        </button>
+                        <Link
+                          to={`/user/order/${order._id}`}
+                          className="flex items-center pl-2"
+                        >
+                          <AiOutlineArrowRight
+                            size={18}
+                            className="text-blue-500"
+                          />
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center pt-2 gap-2">
-                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
-                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
-                    <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
-                    <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
-                      <AiOutlineArrowRight size={18} className="text-blue-500" />
-                    </Link>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            )
         )
-      ))}
+      )}
 
       {categorizedOrders.Delivered?.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Delivered</h2>
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {categorizedOrders.Delivered.map((order) => (
-              <div key={order._id} className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white">
+              <div
+                key={order._id}
+                className="p-6 rounded-lg shadow-lg border flex flex-col space-y-4 bg-white"
+              >
                 <div className="flex items-start space-x-6">
                   <img
-                    src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                    src={
+                      order.cart[0]?.images[0]?.url ||
+                      "https://via.placeholder.com/150"
+                    }
                     alt="Product"
                     className="w-28 h-28 object-cover rounded-lg"
                   />
                   <div className="flex flex-col space-y-1 text-gray-600">
-                    <p className="text-sm text-gray-500">Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span></p>
-                    <p className="text-sm">Status: <span className="font-semibold text-green-600">Delivered</span></p>
+                    <p className="text-sm text-gray-500">
+                      Order Date:{" "}
+                      <span className="font-semibold">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="text-sm">
+                      Status:{" "}
+                      <span className="font-semibold text-green-600">
+                        Delivered
+                      </span>
+                    </p>
                     <p className="text-sm">Items Qty: {order.cart.length}</p>
                     <p>Total: ₱{order.totalPrice}</p>
                   </div>
                 </div>
                 <div className="flex items-center pt-2 gap-2">
-                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
-                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
-                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
-                  <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                    Best Selling
+                  </button>
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                    Products
+                  </button>
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                    Events
+                  </button>
+                  <Link
+                    to={`/user/order/${order._id}`}
+                    className="flex items-center pl-2"
+                  >
                     <AiOutlineArrowRight size={18} className="text-blue-500" />
                   </Link>
                 </div>
@@ -330,7 +422,6 @@ const AllOrders = () => {
   );
 };
 
-
 const AllRefundOrders = () => {
   const { user } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.order);
@@ -342,7 +433,9 @@ const AllRefundOrders = () => {
     }
   }, [dispatch, user?._id]);
 
-  const eligibleOrders = orders?.filter((item) => item.status === "Processing refund");
+  const eligibleOrders = orders?.filter(
+    (item) => item.status === "Processing refund"
+  );
 
   return (
     <div className="w-full p-6 flex flex-col items-center justify-center">
@@ -351,30 +444,59 @@ const AllRefundOrders = () => {
       {eligibleOrders?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {eligibleOrders.map((order) => (
-            <div key={order._id} className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4">
+            <div
+              key={order._id}
+              className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4"
+            >
               <div className="flex items-start space-x-4">
                 <img
-                  src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                  src={
+                    order.cart[0]?.images[0]?.url ||
+                    "https://via.placeholder.com/150"
+                  }
                   alt="Product"
                   className="w-28 h-28 object-cover rounded-lg"
                 />
                 <div className="flex flex-col space-y-1 text-gray-600">
-                  <p className="text-sm">Order ID: <span className="font-semibold">{order._id}</span></p>
+                  <p className="text-sm">
+                    Order ID: <span className="font-semibold">{order._id}</span>
+                  </p>
                   <p className="text-sm text-gray-500">
-                    Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span>
+                    Order Date:{" "}
+                    <span className="font-semibold">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span>
+                    Status:{" "}
+                    <span
+                      className={`font-semibold ${
+                        order.status === "Delivered"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
                   </p>
                   <p className="text-sm">Items Qty: {order.cart.length}</p>
                   <p>Total: ₱{order.totalPrice}</p>
                 </div>
               </div>
               <div className="flex items-center pt-2 gap-2">
-                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Best Selling</button>
-                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Products</button>
-                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Events</button>
-                <Link to={`/user/order/${order._id}`} className="flex items-center pl-2">
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                  Best Selling
+                </button>
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                  Products
+                </button>
+                <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                  Events
+                </button>
+                <Link
+                  to={`/user/order/${order._id}`}
+                  className="flex items-center pl-2"
+                >
                   <AiOutlineArrowRight size={18} className="text-blue-500" />
                 </Link>
               </div>
@@ -400,26 +522,48 @@ const TrackOrder = () => {
   }, [dispatch, user?._id]);
 
   return (
-    <div className="w-full p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Track Your Orders</h2>
+    <div className="w-full p-6 flex flex-col items-center">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        Track Your Orders
+      </h2>
 
       {orders?.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {orders.map((order) => (
-            <div key={order._id} className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4">
+            <div
+              key={order._id}
+              className="p-6 rounded-lg shadow-lg border bg-white flex flex-col space-y-4"
+            >
               <div className="flex items-start space-x-4">
                 <img
-                  src={order.cart[0]?.images[0]?.url || "https://via.placeholder.com/150"}
+                  src={
+                    order.cart[0]?.images[0]?.url ||
+                    "https://via.placeholder.com/150"
+                  }
                   alt="Product"
                   className="w-28 h-28 object-cover rounded-lg"
                 />
                 <div className="flex flex-col space-y-1 text-gray-600">
-                  <p className="text-sm truncate" title={order._id}>Ref ID: <span className="font-semibold">{order._id}</span></p>
+                  <p className="text-sm truncate" title={order._id}>
+                    Ref ID: <span className="font-semibold">{order._id}</span>
+                  </p>
                   <p className="text-sm text-gray-500">
-                    Order Date: <span className="font-semibold">{new Date(order.createdAt).toLocaleDateString()}</span>
+                    Order Date:{" "}
+                    <span className="font-semibold">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </span>
                   </p>
                   <p className="text-sm">
-                    Status: <span className={`font-semibold ${order.status === "Delivered" ? "text-green-600" : "text-red-600"}`}>{order.status}</span>
+                    Status:{" "}
+                    <span
+                      className={`font-semibold ${
+                        order.status === "Delivered"
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
                   </p>
                   <p className="text-sm">Items Qty: {order.cart.length}</p>
                   <p>Total: ₱{order.totalPrice}</p>
@@ -427,9 +571,14 @@ const TrackOrder = () => {
               </div>
               <div className="flex items-center justify-between pt-2 gap-2">
                 <Link to="/products">
-                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">Continue Shopping</button>
+                  <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                    Continue Shopping
+                  </button>
                 </Link>
-                <Link to={`/user/track/order/${order._id}`} className="flex items-center pl-2">
+                <Link
+                  to={`/user/track/order/${order._id}`}
+                  className="flex items-center pl-2"
+                >
                   <MdTrackChanges size={18} className="text-blue-500" />
                 </Link>
               </div>
@@ -437,7 +586,9 @@ const TrackOrder = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">You have no orders to track at the moment.</p>
+        <p className="text-gray-500">
+          You have no orders to track at the moment.
+        </p>
       )}
     </div>
   );

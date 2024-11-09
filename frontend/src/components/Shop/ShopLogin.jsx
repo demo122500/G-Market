@@ -15,7 +15,7 @@ import {
 import animationData from "../../Assests/animations/button_loader.json";
 import Lottie from "react-lottie";
 
-  const ShopLogin = () => {
+const ShopLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +39,7 @@ import Lottie from "react-lottie";
       setTimeout(() => {
         setIsLoading(false); // Stop loading after the delay
         navigate("/dashboard"); // Navigate after the delay
-        window.location.reload(true); 
+        window.location.reload(true);
       }, 3000); // 3-second delay
     } catch (err) {
       console.log("Error during login:", err);
@@ -190,7 +190,7 @@ import Lottie from "react-lottie";
               </div>
               <div className="text-sm">
                 <a
-                  href=".forgot-password"
+                  href="forgot-password"
                   className="font-[12px] text-black hover:text-neutral-700"
                 >
                   Forgot password?
@@ -204,13 +204,15 @@ import Lottie from "react-lottie";
                 className={`group relative w-full h-[40px] flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-[#000] bg-[#73bd3a] hover:bg-[#73bd3a]/90`}
               >
                 {isLoading ? (
-                  <Lottie options={defaultOptions} height={40} width={40}/>
-                ): (
+                  <Lottie options={defaultOptions} height={40} width={40} />
+                ) : (
                   "Log in"
                 )}
               </button>
             </div>
-            <div className={`${styles.noramlFlex} w-full flex items-center justify-center`}>
+            <div
+              className={`${styles.noramlFlex} w-full flex items-center justify-center`}
+            >
               <h4 className="text-sm text-neutral-700">
                 Don't have an account?
               </h4>
