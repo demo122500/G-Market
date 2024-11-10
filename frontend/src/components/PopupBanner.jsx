@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBanners } from "../redux/actions/banner";
@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
 const PopupBanner = ({ isVisible, onClose }) => {
   const dispatch = useDispatch();
   const { banners = [], isLoading } = useSelector((state) => state.banners || {});
+  const [fadeClass, setFadeClass] = useState("fade-in");
+
+  useEffect(() => {
+    setFadeClass("fade-in fade-in-active");
+  }, []);
   
   useEffect(() => {
     if (!banners.length) {
@@ -31,7 +36,7 @@ const PopupBanner = ({ isVisible, onClose }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50"
+      className={`fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ${fadeClass}`}
       style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
     >
       <div className="w-[400px] p-2 rounded-sm text-center relative">
