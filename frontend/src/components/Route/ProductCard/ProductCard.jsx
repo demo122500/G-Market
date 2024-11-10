@@ -24,6 +24,11 @@ const ProductCard = ({ data, isEvent }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const [fadeClass, setFadeClass] = useState("fade-in");
+
+  useEffect(() => {
+    setFadeClass("fade-in fade-in-active");
+  }, []);
 
   //sync wishlist state with component's click state
   useEffect(() => {
@@ -59,7 +64,7 @@ const ProductCard = ({ data, isEvent }) => {
   // Improve 10/21/2024
   return (
     <div
-      className="w-full h-auto rounded-lg shadow-2xl p-4 relative cursor-pointer"
+      className={`w-full h-auto rounded-lg shadow-2xl p-4 relative cursor-pointer ${fadeClass}`}
       style={{
         backgroundImage: `url(${assets.product_bg})`,
         backgroundSize: "cover",

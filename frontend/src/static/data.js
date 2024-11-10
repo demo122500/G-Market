@@ -33,6 +33,38 @@ export const navItems = [
   },
 ];
 
+// navigation Data
+export const aboutNavItems = [
+  {
+    title: "",
+    url: "/career",
+  },
+  {
+    title: "About",
+    url: "/about",
+  },
+  {
+    title: "Why GMarket",
+    url: "/why-gmarket",
+  },
+  {
+    title: "Jobs",
+    url: "/jobs",
+  },
+  {
+    title: "Tech",
+    url: "/tech",
+  },
+  {
+    title: "Events",
+    url: "/about-events",
+  },
+  {
+    title: "Life At GMarket Blog",
+    url: "/blogs",
+  },
+];
+
 // branding data
 export const brandingData = [
   {

@@ -71,6 +71,8 @@ import { getAllEvents } from "./redux/actions/event";
 import { server } from "./server";
 import ShopCreateBanner from "./pages/Shop/ShopCreateBanner.jsx";
 import ShopAllBanners from "./pages/Shop/ShopAllBanners.jsx";
+import AboutUs from "./pages/ShopCareer/AboutUs.jsx";
+import CareerHomepage from "./pages/ShopCareer/CareerHomepage.jsx";
 
 const App = () => {
   const [stripeApikey, setStripeApiKey] = useState("");
@@ -128,6 +130,11 @@ const App = () => {
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/faq" element={<FAQPage />} />
+
+        {/* Career Pages */}
+        <Route path="/career" element={<CareerHomepage />} />
+        <Route path="/about" element={<AboutUs />} />
+
         <Route
           path="/page-not-found"
           element={
@@ -157,7 +164,9 @@ const App = () => {
           path="/inbox"
           element={
             <ProtectedRoute>
-              <UserInbox />
+              {/* <Layout> */}
+                <UserInbox />
+              {/* </Layout> */}
             </ProtectedRoute>
           }
         />

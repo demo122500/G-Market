@@ -39,6 +39,11 @@ const Header = ({ activeHeading }) => {
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(localStorage.getItem('selectedCategory') || "All Categories");
+  const [fadeClass, setFadeClass] = useState("fade-in");
+
+  useEffect(() => {
+    setFadeClass("fade-in fade-in-active");
+  }, []);
 
   useEffect(() => {
     const storedCategory = localStorage.getItem('selectedCategory');
@@ -68,7 +73,7 @@ const Header = ({ activeHeading }) => {
 
   return (
     <>
-      <div className={`${styles.section}`}>
+      <div className={`${styles.section} ${fadeClass}`}>
         <div className="hidden 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between gap-8">
           <div>
             <Link to="/">

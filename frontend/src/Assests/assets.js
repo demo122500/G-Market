@@ -3,6 +3,7 @@ import g_market_logo from "./g-market-logo.png";
 import g_market_logo_white from "./g-market-logo-white.png";
 import g_large from "./g_large.png";
 import g_logo from "./g-logo.png";
+import g_logo_white from "./g-logo_white.png";
 import banner1 from "./banner1.png";
 import banner2 from "./banner2.png";
 import banner3 from "./banner3.png";
@@ -25,6 +26,8 @@ import head_n_shoulder from "./head_shoulder.png";
 import popup_banner from "./popup-banner1.png";
 import popup_banner2 from "./gmarket-banner2.png";
 
+import gmarket_office from "./gmarket-office.webp";
+
 export const assets = {
   popup_banner,
   popup_banner2,
@@ -34,6 +37,7 @@ export const assets = {
   g_market_logo_white,
   g_large,
   g_logo,
+  g_logo_white,
   banner1,
   banner2,
   banner3,
@@ -45,6 +49,7 @@ export const assets = {
   card_icon,
   paypal,
   product_bg,
+  gmarket_office,
 
   // sponsors
   tide_logo,

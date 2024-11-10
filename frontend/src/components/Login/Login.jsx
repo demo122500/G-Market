@@ -228,7 +228,7 @@ const Login = () => {
               <p className="text-neutral-700 text-sm">Or</p>
               <Link to="/shop-login" className="w-full">
                 <button className={`${styles.button} w-full`}>
-                  Login as Seller
+                  Continue as Seller
                 </button>
               </Link>
             </div>

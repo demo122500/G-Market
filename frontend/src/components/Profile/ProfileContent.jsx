@@ -183,7 +183,7 @@ const ProfileContent = ({ active }) => {
 
       {/* message */}
       {active === 4 && (
-        <div>
+        <div className="w-full absolute top-0 px-32">
           <UserInbox />
         </div>
       )}
@@ -334,15 +334,21 @@ const AllOrders = () => {
                         </div>
                       </div>
                       <div className="flex items-center pt-2 gap-2">
-                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
-                          Best Selling
-                        </button>
-                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
-                          Products
-                        </button>
-                        <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
-                          Events
-                        </button>
+                        <Link to={"/best-selling"}>
+                          <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                            Best Selling
+                          </button>
+                        </Link>
+                        <Link to={"/products"}>
+                          <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                            Products
+                          </button>
+                        </Link>
+                        <Link to={"/events"}>
+                          <button className="bg-[#73bd3a]/30 text-[12px] p-1 px-4 rounded-full">
+                            Events
+                          </button>
+                        </Link>
                         <Link
                           to={`/user/order/${order._id}`}
                           className="flex items-center pl-2"

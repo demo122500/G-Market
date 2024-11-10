@@ -163,3 +163,27 @@ input[type="number"] {
 .custom-navigation .swiper-button-next:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+.fade-in-active {
+  opacity: 1;
+}
+
+/* FadeIn.css */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
