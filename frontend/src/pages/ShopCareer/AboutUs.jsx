@@ -14,7 +14,7 @@ const AboutUs = () => {
     <>
       <CareerHeader activeHeading={2} className={`${fadeClass}`}/>
 
-			<div className="w-full h-[50vh] bg-red-500">
+			<div className="w-full h-[50vh]">
 				<img src={assets.gmarket_office} alt="office" className="w-full h-full object-cover"/>
 			</div>
 
